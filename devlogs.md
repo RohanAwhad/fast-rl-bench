@@ -271,3 +271,10 @@ calibrate, run all 12, evaluate, plot, write the report.
   DUET-completion-check bug class (confirmed by code inspection: the
   `duet_group_size` call in `next_fresh_group` is gated strictly behind
   `duet_enabled()`, independent of `greso_enabled()`).
+  SUCCESS: 30/30 steps, 270.1s (under budget), final reward ~0.78-0.81,
+  Trainable consistently 128/128 (GRESO never resizes groups, so no risk of
+  the DUET bug class).
+- **reverse_text difficulty_targeted**: first live exercise of the replay
+  buffer + `difficulty_band` filter combo -- smoke-testing (6 steps) before
+  committing to the full budget, per the "new dispatcher/sink-bookkeeping
+  mechanism needs a smoke test" lesson from DUET.
