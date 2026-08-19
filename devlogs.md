@@ -393,3 +393,16 @@ task. Next: SciKnowEval, same 6 conditions.
   result) and report the outcome honestly -- this is a legitimate,
   interesting empirical finding about the mechanism's fit to this task/model
   combination, not something to hide or work around.
+  **Full run result**: SUCCESS, 25/25 steps, 228.8s (under budget, fastest
+  sciknoweval run so far). Reward trajectory is *bursty*, not a permanent
+  stall: `0.375, 0,0,0,0,0, 0.234, 0,0, 0.172, 0.0625, 0, 0.297, 0.25, 0,
+  0.625, 0,0, 1.0, 0.354, 0,0, 0.4375, 0.875, 0.625`. Many steps still hit
+  0/N trainable (confirms the cold-start-trap mechanism identified in the
+  smoke test), but every several steps a group beats the difficulty band by
+  chance, seeds the replay buffer, and produces a real training burst --
+  second half (steps 16-25) is visibly stronger/more frequent than the first
+  half, consistent with the model slowly climbing out of the "can't emit a
+  parseable answer" regime via these sparse bursts. Net effect: real but
+  much noisier/slower learning than baseline/DUET/GRESO on this task --
+  an honest, reportable result of combining narrow difficulty-band
+  selection with a cold-start binary-reward model, not a broken run.
