@@ -219,3 +219,41 @@ calibrate, run all 12, evaluate, plot, write the report.
 - Calibration numbers: **reverse_text max_steps=30, sciknoweval max_steps=25**.
 - Next: launch `run_all_conditions.sh` for both tasks (sequential, 2 GPUs
   only), then evaluate all 12 checkpoints, collect metrics, plot, write report.
+
+## 2026-08-19 — Real runs: baseline OK, DUET bug found + fixed
+
+- **reverse_text baseline** (real run, 30 steps): SUCCESS. Orchestrator step
+  loop = 269s (`verify_time_budget.py`: 262.1s), final reward ~0.79-0.81
+  (climbed from ~0.11). Under budget.
+- **reverse_text DUET**: FAILED. Killed by the outer 600s timeout at step
+  16/30, with `pending_batch` showing a runaway "+7877 buffered" episode
+  backlog (vs. baseline's typical +7 to +80). Root cause (found by reading
+  the dispatcher/train_sink interaction, not guessing): DUET makes
+  `GroupState.target_rollouts` *per-prompt* (`allocation.py::duet_group_size`
+  can scale a group to 0.5x-1.5x the base size), but
+  `TrainSink.add()`'s group-completion check compared the arrival count
+  against `group_size_for(env_name)` -- a **static per-env config lookup**
+  that's always the *base* group size and never agrees with a DUET-resized
+  group. Effect: an oversized group (>base) finalizes early and its trailing
+  arrivals orphan into a fresh, never-completing entry under the same
+  group_id; an undersized group (<base) never reaches the (too-high) static
+  target at all. Either way the group leaks in `pending_groups`/
+  `pending_group_episodes` forever -- exactly the unbounded backlog observed.
+  This is a general hazard, not reverse-text-specific, since it only depends
+  on DUET being enabled.
+  - **Fix**: added `Rollout.group_target_size: int | None` (metadata field,
+    `exclude=True`, same pattern as `group_id`/`policy_version`) to
+    `orchestrator/types.py`; stamped from `GroupState.target_rollouts` in
+    `dispatcher.py::emit_episode` (covers both normal completion and
+    `drop_group`'s cancellation-marker path, since both funnel through
+    `emit_episode`); `train_sink.py::add()` now checks against
+    `episode[0].group_target_size or group_size_for(env_name)` (falls back
+    to the old static lookup when unset, e.g. eval rollouts -- eval groups
+    are never DUET-resized since the adjustment is `if kind == "train"` only
+    in `next_fresh_group`, so the fallback is exact there, not approximate).
+  - Redeployed the 3 files, re-verified imports on remote, re-launched DUET.
+  - This is exactly the kind of interaction a smoke test would have caught
+    before committing 10 minutes of GPU time to a doomed run — noted for
+    future patches: a genuinely-fresh mechanism that changes dispatcher-side
+    per-group bookkeeping needs a dedicated few-step smoke test, not just a
+    static import/type-check, before it's trusted with a full budgeted run.

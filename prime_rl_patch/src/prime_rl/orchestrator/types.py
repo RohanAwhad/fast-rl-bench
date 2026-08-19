@@ -107,6 +107,18 @@ class Rollout(vf.Trace[DataT], Generic[DataT]):
     is_filtered: bool = Field(default=False, exclude=True)
     filter_results: dict[str, bool] = Field(default_factory=dict, exclude=True)
     eval_step: int | None = Field(default=None, exclude=True)
+    # efficient_rl (DUET): the dispatcher's actual per-group rollout target
+    # (``GroupState.target_rollouts``), stamped by ``emit_episode``. Needed
+    # because DUET makes group size *per-prompt*, not a fixed env-wide
+    # constant -- ``TrainSink.group_size_for(env_name)`` (a static config
+    # lookup) would otherwise never agree with the dispatcher's actual
+    # target for a DUET-resized group, so the group's completion check
+    # (``pending_group_episodes[group_id] < expected``) would compare
+    # against the wrong number and the group would never finalize (leaking
+    # its episodes in ``pending_groups`` forever). None when unset (eval
+    # rollouts, or a group emitted with no ``GroupState``, e.g. drained) --
+    # callers fall back to the static per-env group_size in that case.
+    group_target_size: int | None = Field(default=None, exclude=True)
 
     def assign_advantages(self, values: float | list[float]) -> None:
         """Write the rl advantage stream: a scalar broadcast over the

@@ -576,6 +576,8 @@ class RolloutDispatcher:
             rollout.group_id = meta.group_id
             rollout.policy_version = policy_version
             rollout.off_policy_steps = meta.off_policy_steps
+            # efficient_rl (DUET): see types.py::Rollout.group_target_size docstring.
+            rollout.group_target_size = group.target_rollouts if group is not None else None
             if meta.kind == "eval":
                 assert eval_step is not None, "eval rollout missing eval_step"
                 rollout.eval_step = eval_step

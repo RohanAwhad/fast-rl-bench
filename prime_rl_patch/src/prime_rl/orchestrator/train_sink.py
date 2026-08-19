@@ -187,14 +187,22 @@ class TrainSink:
         """Process one episode arrival; finalize the group on the
         ``group_size``-th episode; return a ``TrainBatch`` if the finalization
         pushed (or left) the batch over its threshold. Arrivals into
-        still-incomplete groups never ship a batch."""
+        still-incomplete groups never ship a batch.
+
+        efficient_rl (DUET): the expected count is the group's *actual*
+        dispatcher-assigned size (``Rollout.group_target_size``, stamped by
+        ``emit_episode``), not the static per-env ``group_size_for()`` --
+        DUET resizes groups per-prompt, so the two disagree for a resized
+        group. Falls back to the static value when unset (vanilla groups,
+        where the two are always equal anyway)."""
         group_id = episode[0].group_id
         env_name = episode[0].env_name
         for rollout in episode:
             await self.process_rollout(rollout)
         self.pending_groups[group_id].extend(episode)
         self.pending_group_episodes[group_id] += 1
-        if self.pending_group_episodes[group_id] < self.group_size_for(env_name):
+        expected = episode[0].group_target_size or self.group_size_for(env_name)
+        if self.pending_group_episodes[group_id] < expected:
             return None
         await self.process_group(group_id)
         # ``pending_batch`` only grows on group finalization, so readiness is
