@@ -5,6 +5,9 @@
 # baseline condition for a handful of steps, reads per-step wall-clock from
 # trainer.log, and prints a recommended --max-steps for run_condition.sh.
 #
+# See run_condition.sh's header for why tracking files live outside
+# prime-rl's own --output-dir/--run.name directory.
+#
 # Usage: calibrate.sh <task> [n_calib_steps]
 set -euo pipefail
 
@@ -14,14 +17,16 @@ PRIME_RL_DIR="${PRIME_RL_DIR:-$HOME/prime-rl}"
 REPO_DIR="${REPO_DIR:-$HOME/fast-rl-bench}"
 TOML="$REPO_DIR/configs/$TASK/base.toml"
 RUN_NAME="${TASK}-calib"
-OUT_DIR="outputs/${RUN_NAME}"
+RUN_REL_DIR="outputs/${RUN_NAME}"
+TRACK_DIR="$PRIME_RL_DIR/outputs/_runlogs/${RUN_NAME}"
 
-mkdir -p "$PRIME_RL_DIR/$OUT_DIR"
+mkdir -p "$TRACK_DIR"
+rm -rf "${PRIME_RL_DIR:?}/${RUN_REL_DIR}"
 SESSION="calib-${TASK}"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 
 echo "Running $N calibration steps for $TASK..."
-tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && export CUDA_VISIBLE_DEVICES=0,1 && timeout --kill-after=30 900 uv run --no-sync rl @ $TOML --max-steps $N --output-dir outputs --run.name $RUN_NAME --ckpt.interval 999999 > $OUT_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $OUT_DIR/launch.log"
+tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && export CUDA_VISIBLE_DEVICES=0,1 && timeout --kill-after=30 900 uv run --no-sync rl @ $TOML --max-steps $N --output-dir outputs --run.name $RUN_NAME --ckpt.interval 999999 > $TRACK_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $TRACK_DIR/launch.log"
 
 echo "tmux session: $SESSION -- waiting for it to finish (up to 15 min)..."
 for _ in $(seq 1 180); do
@@ -31,9 +36,9 @@ for _ in $(seq 1 180); do
   sleep 5
 done
 
-LOG="$(find "$PRIME_RL_DIR/$OUT_DIR/logs" -name trainer.log 2>/dev/null | sort | tail -1)"
+LOG="$(find "$PRIME_RL_DIR/$RUN_REL_DIR/logs" -name trainer.log 2>/dev/null | sort | tail -1)"
 if [ -z "$LOG" ] || [ ! -f "$LOG" ]; then
-  echo "no trainer.log found under $PRIME_RL_DIR/$OUT_DIR/logs -- check $PRIME_RL_DIR/$OUT_DIR/launch.log"
+  echo "no trainer.log found under $PRIME_RL_DIR/$RUN_REL_DIR/logs -- check $TRACK_DIR/launch.log"
   exit 1
 fi
 echo "using trainer.log: $LOG"

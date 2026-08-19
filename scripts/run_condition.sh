@@ -9,6 +9,12 @@
 # `timeout` here is a generous SAFETY NET (startup + training + checkpoint
 # write), not the primary cutoff -- see devlogs.md.
 #
+# IMPORTANT: our own tracking files (env.sh, launch.log, launch_start.ts) live
+# under outputs/_runlogs/<run_name>/, NOT inside outputs/<run_name>/ (the
+# directory prime-rl's --output-dir/--run.name combo resolves to) -- writing
+# anything into that dir before `rl` starts trips its own
+# already-contains-artifacts guard on every single launch.
+#
 # Usage: run_condition.sh <task> <condition> <max_steps> <outer_timeout_s> [run_suffix]
 #   task:      reverse_text | sciknoweval
 #   condition: baseline | duet | greso | difficulty_targeted | experience_replay | mu_grpo
@@ -31,10 +37,15 @@ fi
 [ -f "$TOML" ] || { echo "config not found: $TOML" >&2; exit 1; }
 
 RUN_NAME="${TASK}-${CONDITION}${SUFFIX:+-$SUFFIX}"
-OUT_DIR="outputs/${RUN_NAME}"
-mkdir -p "$PRIME_RL_DIR/$OUT_DIR"
+RUN_REL_DIR="outputs/${RUN_NAME}"          # prime-rl's own space -- never touched before launch
+TRACK_DIR="$PRIME_RL_DIR/outputs/_runlogs/${RUN_NAME}"  # our tracking space
+mkdir -p "$TRACK_DIR"
 
-ENV_FILE="$PRIME_RL_DIR/$OUT_DIR/env.sh"
+# Remove a prior attempt's prime-rl run dir so re-launching the same
+# condition doesn't trip validate_run_dir's already-exists guard.
+rm -rf "${PRIME_RL_DIR:?}/${RUN_REL_DIR}"
+
+ENV_FILE="$TRACK_DIR/env.sh"
 {
   echo "export CUDA_VISIBLE_DEVICES=0,1"
   case "$CONDITION" in
@@ -53,7 +64,7 @@ ENV_FILE="$PRIME_RL_DIR/$OUT_DIR/env.sh"
       echo "export REPLAY_USES_CAP=3"
       echo "export REPLAY_BUFFER_SIZE=512"
       echo "export REPLAY_RUN_NAME=$RUN_NAME"
-      echo "export REPLAY_METRICS=$OUT_DIR/replay_metrics.jsonl"
+      echo "export REPLAY_METRICS=$TRACK_DIR/replay_metrics.jsonl"
       ;;
     experience_replay)
       echo "export REPLAY_MODE=on"
@@ -63,7 +74,7 @@ ENV_FILE="$PRIME_RL_DIR/$OUT_DIR/env.sh"
       echo "export REPLAY_USES_CAP=3"
       echo "export REPLAY_BUFFER_SIZE=512"
       echo "export REPLAY_RUN_NAME=$RUN_NAME"
-      echo "export REPLAY_METRICS=$OUT_DIR/replay_metrics.jsonl"
+      echo "export REPLAY_METRICS=$TRACK_DIR/replay_metrics.jsonl"
       ;;
     mu_grpo)
       echo "export REPLAY_MODE=on"
@@ -74,7 +85,7 @@ ENV_FILE="$PRIME_RL_DIR/$OUT_DIR/env.sh"
       echo "export REPLAY_BUFFER_SIZE=256"
       echo "export EFFRL_MUGRPO_CYCLE_K=4"
       echo "export REPLAY_RUN_NAME=$RUN_NAME"
-      echo "export REPLAY_METRICS=$OUT_DIR/replay_metrics.jsonl"
+      echo "export REPLAY_METRICS=$TRACK_DIR/replay_metrics.jsonl"
       ;;
     *)
       echo "unknown condition: $CONDITION" >&2; exit 1;;
@@ -88,7 +99,8 @@ cat "$ENV_FILE"
 SESSION="run-${RUN_NAME}"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 
-tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && source $ENV_FILE && (date +%s.%N > $OUT_DIR/launch_start.ts) && timeout --kill-after=60 $OUTER_TIMEOUT uv run --no-sync rl @ $TOML --max-steps $MAX_STEPS --output-dir outputs --run.name $RUN_NAME > $OUT_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $OUT_DIR/launch.log"
+tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && source $ENV_FILE && (date +%s.%N > $TRACK_DIR/launch_start.ts) && timeout --kill-after=60 $OUTER_TIMEOUT uv run --no-sync rl @ $TOML --max-steps $MAX_STEPS --output-dir outputs --run.name $RUN_NAME > $TRACK_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $TRACK_DIR/launch.log"
 
 echo "tmux session: $SESSION (attach with: tmux attach -t $SESSION)"
-echo "log: $PRIME_RL_DIR/$OUT_DIR/launch.log"
+echo "log: $TRACK_DIR/launch.log"
+echo "run dir (prime-rl): $PRIME_RL_DIR/$RUN_REL_DIR"
