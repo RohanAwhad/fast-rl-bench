@@ -302,3 +302,22 @@ calibrate, run all 12, evaluate, plot, write the report.
 - **reverse_text mu_grpo**: most complex remaining mechanism (fresh/replay
   *cycling*, `EFFRL_MUGRPO_CYCLE_K=4`, first live exercise) -- smoke-testing
   before the full run.
+  Smoke test (8 steps): cycling confirmed exactly correct from
+  `replay_metrics.jsonl` -- `effective_fresh_target=128` at steps 0, 4
+  (cycle boundaries) and `=0` (pure replay, `replayed=128`) at 1,2,3,5,6,7.
+  Investigated an apparent discrepancy (replay_metrics logged steps 0-11, 12
+  entries, but orchestrator.log only has 8 "Step N" lines matching
+  max_steps=8): root cause is **pre-existing vanilla prime-rl behavior**, not
+  a bug of this patch -- `orchestrator.py::main_loop` calls
+  `train_sink.add()` (where replay composition + bookkeeping happens)
+  *unconditionally* for every arriving episode, and only forwards the result
+  to `finalize_train_batch` (which does the real step-increment / trainer
+  ship / "Step N" logging) `if not self.draining` (see the comment at
+  orchestrator.py:561: "In drain mode any late-arriving train batch is
+  dropped -- we don't want to ship past max_steps"). So late-arriving
+  episodes after max_steps is reached still trigger a (wasted, discarded)
+  replay composition/logging call, but never an actual trainer ship or
+  step-time entry -- harmless to the 5-minute budget (verify_time_budget.py
+  only sums *actually-published* "Step N | Xs |" lines) and to correctness,
+  just a minor buffer-churn inefficiency during drain. Same likely explains
+  difficulty_targeted's earlier "steps observed: 29 (last step: 30)" note.
