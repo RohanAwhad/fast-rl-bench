@@ -453,8 +453,51 @@ cleaned up manually).
    (`verifiers.v1.cli.eval.main:main`, pydantic-config CLI, usage `eval
    <taskset-id> --client.base-url ... -n ... -r ... -o ... --no-push`) --
    confirmed via `eval --help` and a live smoke test.
-2. **sciknoweval: investigating a `--served-model-name` / 404 mismatch** --
-   `--served-model-name` is a real, valid vLLM flag (lives under the
-   `ModelConfig` help group, not `Frontend`, which is why an initial
-   `--help=Frontend` grep found nothing) -- root cause under active
-   investigation (empirical timing test running).
+2. **sciknoweval: `--served-model-name` 404 was a health-check race.**
+   `--served-model-name` is a real, valid vLLM flag (`ModelConfig` group, not
+   `Frontend` -- why an initial `--help=Frontend` grep found nothing). An
+   isolated manual server + direct `/v1/chat/completions` curl both worked
+   fine with the exact same served name, proving the flag itself is correct.
+   Root cause: the health check only polled `curl .../v1/models` for *any*
+   200 response, not that the specific served name was actually routable for
+   completions yet -- `eval_sciknoweval.py` has zero retry tolerance
+   (crashes `main_async` on the very first exception from
+   `asyncio.as_completed`), so if the first wave of ~32 concurrent requests
+   raced that narrow window, the whole eval died immediately. Fixed by
+   polling an actual `POST /v1/chat/completions` (checking for a `"choices"`
+   key in the response) instead of just `GET /v1/models` connectivity --
+   exercises the exact request path the real eval depends on.
+
+3. **reverse-text: two more issues once on the correct (`eval`) CLI.**
+   Confirmed via `--dry-run true` config dump + source reading
+   (`verifiers/v1/configs/harness.py`, `verifiers/v1/interception/__init__.py`):
+   - `HarnessConfig.id` defaults to `"bash"` at the framework level (not
+     taskset-specific) -- reverse-text/sciknoweval being plain single-turn
+     Tasks with no `toolsets()`, this silently wrapped every eval rollout in
+     a full coding-agent harness (bash tool, file edit/search, 600s tool
+     timeout) instead of the one-shot chat completion the model was actually
+     trained under. Fixed with `--env.agent.harness.id null` (the
+     framework's plain "one completion, no tools" harness,
+     `verifiers/v1/harnesses/null/`).
+   - The CLI's own default agent runtime is `type: prime` (a real Prime
+     Intellect cloud sandbox per rollout) -- caused the immediate
+     `SandboxError: ... API key unauthorized` seen with a dummy
+     `$PRIME_API_KEY`, and separately caused a *teardown-time* crash
+     (`SystemExit: not authenticated with prime`, from
+     `InterceptionServer.__init__ -> make_tunnel -> ensure_prime_auth`) even
+     with `--no-push`, since `requires_tunnel()` is computed from
+     `_runs_local()` (all agent runtimes local?) independent of `--push`.
+     Fixed with `--env.agent.runtime.type subprocess` (runs the harness as a
+     plain local subprocess, no sandbox/auth, and makes `_runs_local()` true
+     so the tunnel/interception path -- and its Prime-auth requirement --
+     is skipped entirely).
+   Verified end-to-end with a live 4x2-rollout run against a real checkpoint
+   server: all 8 rows `ok: true`, `errors: []`, `rewards.lcs.score` in
+   0.75-0.93 -- consistent with reverse-text-baseline's own training-time
+   reward range. `eval_reverse_text.sh` updated to use `eval` (not
+   `vf-eval`) with both flags plus `--env.agent.max-output-tokens 1024`
+   (equivalent of the old `--max-tokens`); `summarize_vfeval_results.py`
+   rewritten for the v1 CLI's `traces.jsonl` schema (episode-level
+   `{id, env, ok, errors, traces: [...]}`, per-trace `rewards: {name:
+   {score, weight}}` -- summed per episode, then averaged, matching the old
+   "avg reward" semantics).

@@ -27,8 +27,18 @@ tmux kill-session -t "$SESSION" 2>/dev/null || true
 tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && CUDA_VISIBLE_DEVICES=$GPU uv run --no-sync vllm serve $WEIGHTS --served-model-name $SERVED_NAME --port $PORT --gpu-memory-utilization 0.85 --max-model-len 4096 > /tmp/${RUN_NAME}_eval_server.log 2>&1"
 
 echo "Waiting for vLLM eval server (port $PORT)..."
+# NOTE: checking /v1/models responding is not enough -- it can return 200
+# (with the correct served name already listed) slightly before the
+# completions route is fully wired to that name, which raced eval_sciknoweval.py's
+# very first concurrent request batch into a wall of `model does not exist`
+# 404s on the initial run (see devlogs.md). Poll an actual chat completion
+# instead so the check exercises the exact request path eval_sciknoweval.py
+# depends on.
 for _ in $(seq 1 60); do
-  if curl -s "http://localhost:$PORT/v1/models" >/dev/null 2>&1; then
+  if curl -s -X POST "http://localhost:$PORT/v1/chat/completions" \
+      -H "Content-Type: application/json" \
+      -d "{\"model\": \"$SERVED_NAME\", \"messages\": [{\"role\": \"user\", \"content\": \"hi\"}], \"max_tokens\": 1}" \
+      2>/dev/null | grep -q '"choices"'; then
     echo "server ready"
     break
   fi
