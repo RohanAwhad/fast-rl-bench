@@ -15,9 +15,6 @@ name = "PrimeIntellect/Qwen3-0.6B"
 [trainer.model]
 attn = "flash_attention_2"
 
-[monitors.wandb]
-project = "fast-rl-bench-sciknoweval"
-
 [orchestrator]
 batch_size = 128
 group_size = 16

@@ -88,7 +88,7 @@ cat "$ENV_FILE"
 SESSION="run-${RUN_NAME}"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 
-tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && source $ENV_FILE && export WANDB_API_KEY=\${WANDB_API_KEY:-} && (date +%s.%N > $OUT_DIR/launch_start.ts) && timeout --kill-after=60 $OUTER_TIMEOUT uv run --no-sync rl @ $TOML --max-steps $MAX_STEPS --output-dir $OUT_DIR --wandb.name $RUN_NAME > $OUT_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $OUT_DIR/launch.log"
+tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && source $ENV_FILE && (date +%s.%N > $OUT_DIR/launch_start.ts) && timeout --kill-after=60 $OUTER_TIMEOUT uv run --no-sync rl @ $TOML --max-steps $MAX_STEPS --output-dir $OUT_DIR --run.name $RUN_NAME > $OUT_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $OUT_DIR/launch.log"
 
 echo "tmux session: $SESSION (attach with: tmux attach -t $SESSION)"
 echo "log: $PRIME_RL_DIR/$OUT_DIR/launch.log"

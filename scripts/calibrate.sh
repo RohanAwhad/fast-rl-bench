@@ -21,7 +21,7 @@ SESSION="calib-${TASK}"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 
 echo "Running $N calibration steps for $TASK..."
-tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && export CUDA_VISIBLE_DEVICES=0,1 && export WANDB_API_KEY=\${WANDB_API_KEY:-} && timeout --kill-after=30 900 uv run --no-sync rl @ $TOML --max-steps $N --output-dir $OUT_DIR --wandb.name $RUN_NAME --ckpt.interval 999999 > $OUT_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $OUT_DIR/launch.log"
+tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && export CUDA_VISIBLE_DEVICES=0,1 && timeout --kill-after=30 900 uv run --no-sync rl @ $TOML --max-steps $N --output-dir $OUT_DIR --run.name $RUN_NAME --ckpt.interval 999999 > $OUT_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $OUT_DIR/launch.log"
 
 echo "tmux session: $SESSION -- waiting for it to finish (up to 15 min)..."
 for _ in $(seq 1 180); do

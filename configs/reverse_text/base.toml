@@ -18,9 +18,6 @@ name = "PrimeIntellect/Qwen3-0.6B-Reverse-Text-SFT"
 [trainer.model]
 attn = "flash_attention_2"
 
-[monitors.wandb]
-project = "fast-rl-bench-reverse-text"
-
 [orchestrator]
 batch_size = 128
 group_size = 16
