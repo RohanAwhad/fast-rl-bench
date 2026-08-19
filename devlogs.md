@@ -289,3 +289,8 @@ calibrate, run all 12, evaluate, plot, write the report.
   hasn't built up a large-enough backlog yet this early to fully backfill.
   Expected to stabilize as the buffer fills over more steps; not a
   hang/crash risk (confirmed: smoke test completed all 6 steps).
+  **Full run (30 steps)**: SUCCESS. 214.5s (fastest condition so far --
+  under budget with margin), final fresh/replay mean reward ~0.72-0.80.
+- **reverse_text experience_replay**: shares `_process_batch_replay` exactly
+  with difficulty_targeted (just no `difficulty_band` filter, simpler case)
+  -- skipped a separate smoke test, went straight to the full 30-step run.
