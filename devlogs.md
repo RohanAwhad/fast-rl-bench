@@ -428,3 +428,33 @@ sciknoweval: baseline 263.4s, duet 253.0s, greso 263.5s, difficulty_targeted
 Next: run eval_reverse_text.sh / eval_sciknoweval.sh against all 12 final
 checkpoints, then collect_metrics.py + make_plots.py, then fill in
 report.md Results/Discussion.
+
+### Eval pipeline: two real bugs found on first end-to-end run
+
+Both eval sweeps failed on their very first (baseline) iteration, then kept
+failing identically through all 6 conditions each (the outer loop has no
+`set -e`, but each `eval_*.sh` does, so failures were caught+logged, just
+wasted GPU time; leaked 2 tmux sessions + ~40GB/GPU on both GPUs since
+`set -e` skipped the trailing `tmux kill-session` cleanup line on failure --
+cleaned up manually).
+
+1. **reverse-text: `vf-eval` is the wrong CLI.** The `Prime RL - Reverse Text
+   Run Guide` gist (written against an older prime-rl/reverse_text) says
+   reverse-text "registers itself as an env via `load_environment()`"
+   (legacy verifiers API). The actual installed package on this node
+   (`reverse_text-0.1.0`, at
+   `prime-rl/deps/verifiers/environments/reverse_text/`) is a **v1-style**
+   `Taskset`/`Task` module (`import verifiers.v1 as vf`) -- same style as
+   our own sciknoweval env -- with no `load_environment()` at all. `vf-eval`
+   (`verifiers.legacy.scripts.eval:main`) can only load legacy-style envs,
+   so it crashes immediately: `RuntimeError: Failed to load environment
+   'reverse-text': Module 'reverse_text' does not expose load_environment`.
+   The correct tool for v1 envs is a separate console script, `eval`
+   (`verifiers.v1.cli.eval.main:main`, pydantic-config CLI, usage `eval
+   <taskset-id> --client.base-url ... -n ... -r ... -o ... --no-push`) --
+   confirmed via `eval --help` and a live smoke test.
+2. **sciknoweval: investigating a `--served-model-name` / 404 mismatch** --
+   `--served-model-name` is a real, valid vLLM flag (lives under the
+   `ModelConfig` help group, not `Frontend`, which is why an initial
+   `--help=Frontend` grep found nothing) -- root cause under active
+   investigation (empirical timing test running).
