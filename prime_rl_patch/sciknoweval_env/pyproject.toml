@@ -1,0 +1,14 @@
+[project]
+name = "sciknoweval"
+version = "0.1.0"
+description = "sciknoweval — multi-domain scientific-knowledge MCQ (biology/chemistry/material/physics), scored by deterministic letter extraction."
+requires-python = ">=3.11"
+dependencies = ["datasets"]
+tags = ["single-turn", "science", "v1"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sciknoweval"]

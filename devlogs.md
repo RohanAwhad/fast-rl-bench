@@ -1,0 +1,132 @@
+# devlogs
+
+Project: reproduce 5 "fast/efficient RL training" paper mechanisms (DUET, GRESO,
+Difficulty-Targeted Selection+Replay, Experience Replay, µ-GRPO) as additive
+patches to [prime-rl](https://github.com/PrimeIntellect-ai/prime-rl), compare
+each against vanilla Prime-RL default GRPO, on two tasks (`reverse-text`,
+`sciknoweval`), under a **hard 5-minute training-time budget per run**
+(measured: first rollout dispatch -> end of last training step, excluding
+setup/boot and final checkpoint export). Final artifact: a paper-style report
+with plots/tables.
+
+## 2026-08-19 — Kickoff / recon
+
+### Compute
+- Remote node: `ssh -J jump@52.117.124.209 ronny_romeo@10.0.140.14`, **2x NVIDIA
+  L40S (46GB each)**, CUDA 13.2, no `rsync` (use `git` instead), `uv`/`tmux`/`git`
+  present, 250GB free disk, GPUs idle at kickoff.
+- This is much smaller than the reference run guides assume (8x H100 for
+  reverse-text's 1+1 GPU design is trivial; sciknoweval's guide wants
+  Qwen3-**8B** on 2 train + 6 infer GPUs — infeasible here: even 2-way FSDP
+  sharding of 8B+AdamW needs ~67GB/GPU per prior runs, and we only have 2x46GB
+  total, not even enough for the trainer alone).
+- **Decision (confirmed with Rohan): use Qwen3-0.6B for BOTH tasks.** Reverse-text
+  already spec'd `Qwen3-0.6B` (warm-start SFT ckpt) — unchanged. SciKnowEval
+  swaps `PrimeIntellect/Qwen3-8B` -> `PrimeIntellect/Qwen3-0.6B` (cold start,
+  same "base widened with RL-friendly chat template" relationship). This is a
+  **documented hardware-driven scope adaptation**, not a fidelity change to the
+  RL algorithms under test — every condition (baseline + 5 papers) within a task
+  uses the identical model/hardware, so the *relative* comparison stays valid;
+  only apples-to-apples vs. the original papers' absolute numbers is lost (and
+  wasn't the point — the point is relative wall-clock efficiency under a shared
+  budget).
+
+### Framework recon (read real source, not just the gists — gists had stale
+paths, e.g. `examples/reverse_text/rl.toml` / `[orchestrator.train.env]`)
+- Cloned `PrimeIntellect-ai/prime-rl`, pinned to commit `d8f3d010` (matches the
+  commit a prior related repo's replay-buffer patch was developed/tested
+  against — minimizes integration risk since I'm reusing real, working code
+  from that patch rather than writing the replay mechanism from scratch).
+- `deps/*` are git submodules (`verifiers`, `renderers`, `prime-envs`,
+  `pydantic-config`) — need `git submodule update --init --recursive`. Their
+  `.gitmodules` URLs are SSH (`git@github.com:...`), which fails on a node
+  without a GitHub SSH key — fixed via
+  `git config --global url."https://github.com/".insteadOf "git@github.com:"`.
+- `reverse_text` is **already a first-class uv workspace member**
+  (`deps/verifiers/environments/reverse_text`) on this prime-rl version — the
+  gist's "manual wheel unzip" workaround is stale/for an older release. Needs
+  `uv sync --all-packages --extra flash-attn` (plain `uv sync --extra
+  flash-attn`, no `--all-packages`, does NOT pull in workspace-member envs —
+  confirmed empirically: `import reverse_text` failed after the first sync,
+  succeeded after re-syncing with `--all-packages`).
+- Config schema confirmed current (read `packages/prime-rl-configs/src/prime_rl/configs/{orchestrator,rl,algorithm}.py`
+  directly): `[[orchestrator.train.source]]` (not `.env`), per-source
+  `env.taskset.id`, top-level `[orchestrator] group_size`/`batch_size`,
+  `[deployment] num_train_gpus/num_infer_gpus` (defaults 1/1 — fine for us).
+- Found and reused **prior related work by the same author** (two other repos,
+  same GitHub account, explicitly reuse-first per house style):
+  - `RohanAwhad/isdpo_reprod` — has a real, tested `sciknoweval` verifiers env
+    package (taskset + MCQ letter-extraction regex, copied there from prime-rl's
+    own `gpqa` env), a standalone `eval_sciknoweval.py` script, and working
+    example TOML configs for both tasks on the *current* schema. Reused
+    directly (with attribution) rather than re-deriving from the gist.
+  - `RohanAwhad/replay_buffer_experiment_rl` — a full, tested GRPO replay-buffer
+    patch for prime-rl (`dispatcher.py`/`orchestrator.py`/`train_sink.py`
+    patches + a `replay/` package: buffer + 12 priority functions), developed
+    at the exact same pinned commit. This is the base for 3 of the 5 target
+    papers (Experience Replay directly; Difficulty-Targeted-Selection+Replay and
+    µ-GRPO as additive extensions of the same mechanism — see design doc below).
+
+### Algorithm design — mapping 5 papers onto prime-rl's real extension points
+prime-rl's algorithm surface (`orchestrator/algo/*.py`, hooks: `score_rollout`,
+`score_group`) is for *credit assignment*, not rollout scheduling — DUET/GRESO
+need to act *before* generation, which lives in `RolloutDispatcher`. Chose
+**dispatcher-level + filter-level patches**, all gated by env vars / new TOML
+filter types, off by default (baseline = zero behavior change):
+
+| Paper | Mechanism implemented | Where |
+|---|---|---|
+| **DUET** | Adaptive `group_size` per prompt: a per-prompt (falling back to a length-bucket) EMA of historical reward-variance decides whether this prompt gets a below/above-baseline rollout count (budget-neutral in expectation). Early-abort (the paper's other mechanism) is **not** implemented — true mid-generation cancellation needs vLLM-scheduler-level surgery, scoped out; documented as a fidelity gap. | `dispatcher.py::next_fresh_group` (new: `efficient_rl/utility_tracker.py`, `efficient_rl/allocation.py`) |
+| **GRESO** | Predict-before-generating: same utility tracker, but *skips* dispatching a prompt whose bucket has near-zero historical reward variance (likely all-same-reward degenerate group), with an ε exploration floor so the estimate keeps refreshing. Saves real generation compute (skipped prompts are never sent to vLLM). | same files as DUET (shared tracker) |
+| **Difficulty-Targeted Selection + Rollout Replay** | New `difficulty_band` post-batch filter: infers each rollout's group-mean reward from `reward - scalar_advantage()` (exact for GRPO's uniform per-rollout advantage) and drops (from *fresh* training) any group outside `[low, high]` — i.e. train preferentially on the model's current frontier. Combined with the replay buffer (below) so the batch still fills to size from history instead of shrinking. | `orchestrator/filters.py` + `configs/orchestrator.py` (new filter type) + replay reuse |
+| **Experience Replay** | The replay-buffer patch as-is: `staleness` priority (recency-based reuse — the generic paper's core idea, "don't discard a rollout after one use"), admission filter, uses-cap eviction. | `efficient_rl/replay/{buffer,priorities}.py` (adapted), `train_sink.py` |
+| **µ-GRPO** | Same replay buffer, but `fresh_target` **cycles**: 1 in every K shipped batches is fully fresh (and admitted to the buffer); the other K-1 are 100% replay of that same admitted batch. Net effect: K gradient steps per "generation phase" — amortizing rollout cost K-fold, the paper's actual mechanism ("generate a big batch less frequently, more optimization per generation phase"). | `train_sink.py` (`EFFRL_MUGRPO_CYCLE_K`) |
+
+**Bug found + fixed while adapting the borrowed replay code**: the original
+`_process_batch_replay` never re-inserts items drawn via `ReplayBuffer.sample()`
+back into `self.items` (only the *fresh-kept* items get restored, to avoid
+same-step double-counting) — so `uses_cap` was structurally unreachable for
+pure-replay draws (an item can never accumulate uses>1 if it's removed from the
+pool the first time it's replayed). Fixed in my adapted copy by re-extending
+`replay_items` back into the pool after use, matching the documented intent
+("`uses_cap`: max times one sample can be replayed before eviction"). Noted here
+per "trust code over docs" — the original repo's own docs already promised this
+behavior, the code just didn't (yet) implement it; their headline finding
+(admission-filter + reuse-cap driving most of the win, robust across priority
+formulas) is about the *filter*, not this specific pool-refill detail, so it's
+unlikely to have been load-bearing for their conclusions — but it matters a lot
+for **µ-GRPO**, which depends on one batch surviving exactly K uses.
+
+### 5-minute hard cutoff — operationalization
+prime-rl has no wall-clock stop, only `max_steps` (confirmed in both run
+guides). Plan (matches the sciknoweval guide's own gotcha #3 — don't cut
+`timeout` close to training time, checkpoint writes can take minutes and a
+mid-write kill corrupts the checkpoint):
+1. **Calibrate** per task: run baseline for a handful of steps, measure real
+   per-step time on *this* hardware (L40S, not the guides' H100s).
+2. Convert to a **`--max-steps`** that targets ~270-285s of actual training loop
+   (leaving margin under the 300s hard cap, accounting for the slow step-0
+   compile/warmup seen in every reference run).
+3. Apply that step budget to **all 6 conditions** of a task (baseline has the
+   most generation work per step of any condition here, so it's a conservative
+   ceiling — variants that skip/reuse rollouts should be at or under it).
+4. Wrap the whole `rl` launch in an outer `timeout` sized generously
+   (startup-estimate + 300s + checkpoint-estimate + margin) as a **safety net**
+   against hangs — not the primary cutoff mechanism.
+5. **Verify empirically** from `metrics.jsonl` / logs (first rollout timestamp
+   -> last step timestamp) that measured training time is <= 5 min for every
+   run; if a run overshoots, truncate the comparison at the 5-min mark using
+   per-step timestamps rather than discarding the run.
+
+### Repo
+- Public GitHub repo created: https://github.com/RohanAwhad/fast-rl-bench
+- Local dir `fast_rl/` (this repo) holds all patch code / configs / scripts /
+  analysis; the remote node clones it fresh and "installs" the patch into its
+  `~/prime-rl` checkout (no rsync available, so git is the sync mechanism both
+  ways: this repo -> node via `git clone`/`git pull`).
+
+Next: write the `efficient_rl` patch package + patched `dispatcher.py`/
+`train_sink.py`/`filters.py`/`configs/orchestrator.py`, the sciknoweval env
+(copied from `isdpo_reprod` with attribution), 12 TOML configs (6 conditions x
+2 tasks), deploy + run + eval + metrics-collection scripts. Then deploy,
+calibrate, run all 12, evaluate, plot, write the report.

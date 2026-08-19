@@ -1,0 +1,63 @@
+# SciKnowEval RL — cold start GRPO. Model swapped from the recommended
+# Qwen3-8B to Qwen3-0.6B (see devlogs.md): our node has 2x L40S 46GB total,
+# vs. the guide's 8x H100 (2 train + 6 infer GPUs for the 8B model) — not
+# enough even for the 8B trainer alone. Every condition on this task uses the
+# same swap, so the relative comparison between conditions stays valid.
+#
+# Shared by: baseline, DUET, GRESO, Experience Replay, mu-GRPO (env-var
+# differentiated, see scripts/run_condition.sh). Difficulty-Targeted needs one
+# extra filter block, see difficulty_targeted.toml.
+seq_len = 4096
+
+[model]
+name = "PrimeIntellect/Qwen3-0.6B"
+
+[trainer.model]
+attn = "flash_attention_2"
+
+[monitors.wandb]
+project = "fast-rl-bench-sciknoweval"
+
+[orchestrator]
+batch_size = 128
+group_size = 16
+
+# Cold-start safety net (matches the reference Qwen3-8B config's own
+# posture): an un-tuned base model may not reliably emit a parseable A-D
+# letter, tying every rollout in a group at reward 0 — monitor instead of
+# enforcing so the run continues and shows the stall rather than
+# hard-aborting after 10 empty batches.
+[[orchestrator.post_batch_filters]]
+type = "gibberish"
+
+[[orchestrator.post_batch_filters]]
+type = "repetition"
+
+[[orchestrator.post_batch_filters]]
+type = "zero_advantage"
+enforce = false
+
+[orchestrator.train.sampling]
+max_completion_tokens = 256
+
+[[orchestrator.train.source]]
+name = "sciknoweval"
+
+[orchestrator.train.source.env.taskset]
+id = "sciknoweval"
+
+[orchestrator.train.source.env.agent.harness]
+id = "null"
+
+[orchestrator.train.source.env.agent.runtime]
+type = "subprocess"
+
+[trainer.optim]
+lr = 5e-6
+
+[ckpt]
+
+[inference]
+
+[orchestrator.renderer]
+name = "prime-qwen3"

@@ -1,0 +1,51 @@
+# reverse-text RL — Prime-RL recommended default (warm-start GRPO).
+# Shared by: baseline, DUET, GRESO, Experience Replay, mu-GRPO — those 5
+# conditions differ from each other (and from baseline) purely via env vars
+# set by scripts/run_condition.sh, not via TOML. Difficulty-Targeted Selection
+# needs one extra filter block, see difficulty_targeted.toml.
+#
+# max_steps is set on the CLI per run (calibrated to ~5min of training time
+# on this node — see scripts/calibrate.sh / devlogs.md).
+seq_len = 2048
+
+[model]
+name = "PrimeIntellect/Qwen3-0.6B-Reverse-Text-SFT"
+
+# This node's L40S GPUs (Ada, SM89) — pin FA2 explicitly rather than trust
+# "auto" (the reference runs needed this on Hopper too, for a different
+# reason: FA3 not installed there. Here it's belt-and-suspenders since flash
+# attn's SM89 support isn't called out explicitly in prime-rl's wheel note).
+[trainer.model]
+attn = "flash_attention_2"
+
+[monitors.wandb]
+project = "fast-rl-bench-reverse-text"
+
+[orchestrator]
+batch_size = 128
+group_size = 16
+
+[orchestrator.train.sampling]
+max_completion_tokens = 128
+
+[[orchestrator.train.source]]
+name = "reverse-text"
+
+[orchestrator.train.source.env.taskset]
+id = "reverse-text"
+
+[orchestrator.train.source.env.agent.harness]
+id = "null"
+
+[orchestrator.train.source.env.agent.runtime]
+type = "subprocess"
+
+[trainer.optim]
+lr = 3e-6
+
+[ckpt] # Checkpoint at the end of training
+
+[inference] # empty = vLLM defaults (1 train GPU + 1 infer GPU, port 8000)
+
+[orchestrator.renderer]
+name = "prime-qwen3"

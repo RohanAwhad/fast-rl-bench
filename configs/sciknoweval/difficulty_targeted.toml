@@ -1,0 +1,58 @@
+# SciKnowEval RL — Difficulty-Targeted Selection + Rollout Replay.
+# Identical to base.toml plus one extra post-batch filter (see
+# configs/reverse_text/difficulty_targeted.toml for the mechanism note).
+seq_len = 4096
+
+[model]
+name = "PrimeIntellect/Qwen3-0.6B"
+
+[trainer.model]
+attn = "flash_attention_2"
+
+[monitors.wandb]
+project = "fast-rl-bench-sciknoweval"
+
+[orchestrator]
+batch_size = 128
+group_size = 16
+
+[[orchestrator.post_batch_filters]]
+type = "gibberish"
+
+[[orchestrator.post_batch_filters]]
+type = "repetition"
+
+[[orchestrator.post_batch_filters]]
+type = "zero_advantage"
+enforce = false
+
+[[orchestrator.post_batch_filters]]
+type = "difficulty_band"
+low = 0.15
+high = 0.85
+enforce = true
+
+[orchestrator.train.sampling]
+max_completion_tokens = 256
+
+[[orchestrator.train.source]]
+name = "sciknoweval"
+
+[orchestrator.train.source.env.taskset]
+id = "sciknoweval"
+
+[orchestrator.train.source.env.agent.harness]
+id = "null"
+
+[orchestrator.train.source.env.agent.runtime]
+type = "subprocess"
+
+[trainer.optim]
+lr = 5e-6
+
+[ckpt]
+
+[inference]
+
+[orchestrator.renderer]
+name = "prime-qwen3"

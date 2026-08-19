@@ -1,0 +1,60 @@
+# reverse-text RL — Difficulty-Targeted Selection + Rollout Replay.
+# Identical to base.toml plus one extra post-batch filter: train
+# preferentially on groups sitting at the model's current learning frontier
+# (mean reward in [low, high]); off-band groups are dropped from the fresh
+# cohort. Combined (via env vars, see scripts/run_condition.sh) with the
+# replay buffer so the batch still fills to size from history.
+seq_len = 2048
+
+[model]
+name = "PrimeIntellect/Qwen3-0.6B-Reverse-Text-SFT"
+
+[trainer.model]
+attn = "flash_attention_2"
+
+[monitors.wandb]
+project = "fast-rl-bench-reverse-text"
+
+[orchestrator]
+batch_size = 128
+group_size = 16
+
+[[orchestrator.post_batch_filters]]
+type = "gibberish"
+
+[[orchestrator.post_batch_filters]]
+type = "repetition"
+
+[[orchestrator.post_batch_filters]]
+type = "zero_advantage"
+
+[[orchestrator.post_batch_filters]]
+type = "difficulty_band"
+low = 0.15
+high = 0.85
+enforce = true
+
+[orchestrator.train.sampling]
+max_completion_tokens = 128
+
+[[orchestrator.train.source]]
+name = "reverse-text"
+
+[orchestrator.train.source.env.taskset]
+id = "reverse-text"
+
+[orchestrator.train.source.env.agent.harness]
+id = "null"
+
+[orchestrator.train.source.env.agent.runtime]
+type = "subprocess"
+
+[trainer.optim]
+lr = 3e-6
+
+[ckpt]
+
+[inference]
+
+[orchestrator.renderer]
+name = "prime-qwen3"
