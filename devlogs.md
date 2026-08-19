@@ -413,3 +413,18 @@ task. Next: SciKnowEval, same 6 conditions.
   noisy but healthy and gradually climbing (0.125 -> peaks of 0.72/0.53,
   no long runs of exact 0) -- confirms the trap is specific to the
   difficulty-band filter, not replay itself.
+- **mu_grpo**: also plain `base.toml`, launched directly at full budget.
+  SUCCESS: 25/25 steps, 219.9s (fastest sciknoweval run, as expected for the
+  most replay-heavy cycling). Reward noisy but no worse than
+  experience_replay's pattern (0.12 -> peaks 0.69/0.78, several zeros
+  interspersed) -- healthy given cold start.
+
+### All 12 (task x condition) training runs complete
+
+reverse-text: baseline 262.1s, duet 267.0s, greso 270.1s, difficulty_targeted
+214.5s, experience_replay 209.7s, mu_grpo 200.2s -- all under 300s.
+sciknoweval: baseline 263.4s, duet 253.0s, greso 263.5s, difficulty_targeted
+228.8s, experience_replay 226.7s, mu_grpo 219.9s -- all under 300s.
+Next: run eval_reverse_text.sh / eval_sciknoweval.sh against all 12 final
+checkpoints, then collect_metrics.py + make_plots.py, then fill in
+report.md Results/Discussion.
