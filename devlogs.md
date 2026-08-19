@@ -536,3 +536,36 @@ the old naive `/v1/models` check). Fix: don't run two sweeps that share a
 mutable git checkout concurrently without pulling once, sequentially,
 first. Re-running sciknoweval's sweep solo (no concurrent pull) after an
 explicit, isolated `git pull`.
+
+### sciknoweval: all 6 final evals complete (800-question held-out set, mean@1)
+
+Solo re-run succeeded cleanly across all 6 conditions, all `n_rows: 800`
+(zero failures). `overall_accuracy`: baseline 0.541, duet 0.549, greso
+0.569, difficulty_targeted 0.459, experience_replay 0.486, mu_grpo 0.468.
+
+**Different pattern than reverse-text.** On reverse-text all 6 conditions
+converged to a tight 0.77-0.83 band regardless of mechanism. On sciknoweval,
+the three "generate fresh every step" conditions (baseline/duet/greso)
+clearly outperform (0.54-0.57) the three replay-based conditions
+(difficulty_targeted/experience_replay/mu_grpo, 0.46-0.49) -- roughly a
+5-11pt accuracy gap. Plausible explanation: all conditions used the *same*
+fixed step count (25, calibrated from baseline's timing per task), but the
+replay-based conditions' own per-run timings finished well under the 300s
+budget (200-229s vs. baseline/duet/greso's 253-270s) -- i.e. at matched
+*step count* they are not using their full wall-clock allowance, and at
+matched step count (not matched wall-clock), reusing/replaying rollouts
+means fewer genuinely novel gradient-relevant updates over only 25 steps on
+a cold-start, binary-reward task where the model needs to first learn the
+answer-format basics from scratch. difficulty_targeted's particularly low
+score (0.459, at or below baseline) is directly consistent with the
+cold-start bootstrapping trap documented above (bursty, inefficient
+learning signal). This is a genuine, worth-discussing divergence from
+reverse-text's story, not a bug -- reverse-text's warm start means all
+conditions already start from a competent policy where the "fresh vs.
+replay" distinction matters far less; sciknoweval's from-scratch start
+means every step of genuinely fresh signal counts more, and the
+replay-heavy conditions get relatively fewer of those per fixed step
+budget.
+
+**All 12 (task x condition) runs now fully trained and evaluated.** Next:
+`collect_metrics.py` + `make_plots.py`, then fill in report.md.
