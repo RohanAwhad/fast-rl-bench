@@ -321,3 +321,24 @@ calibrate, run all 12, evaluate, plot, write the report.
   only sums *actually-published* "Step N | Xs |" lines) and to correctness,
   just a minor buffer-churn inefficiency during drain. Same likely explains
   difficulty_targeted's earlier "steps observed: 29 (last step: 30)" note.
+  **Full run (30 steps)**: SUCCESS. 200.2s -- the fastest condition of all
+  six, as expected (least fresh-generation work per step on average). Final
+  reward ~0.77-0.79.
+
+### reverse_text: all 6 conditions complete
+
+| Condition | Training time (s) | Final reward |
+|---|---|---|
+| baseline | 262.1 | ~0.79-0.81 |
+| duet | 267.0 | ~0.74-0.82 |
+| greso | 270.1 | ~0.78-0.81 |
+| difficulty_targeted | 214.5 | ~0.72-0.80 |
+| experience_replay | 209.7 | ~0.75-0.79 |
+| mu_grpo | 200.2 | ~0.77-0.79 |
+
+All under the 300s budget with margin, all reaching comparable final reward.
+Clear pattern: baseline/DUET/GRESO (full fresh generation every step)
+cluster at 260-270s; the three replay-based conditions cluster faster at
+200-215s (less generation work per step from reusing data) -- directly
+supports the papers' core efficiency claim, at least directionally, on this
+task. Next: SciKnowEval, same 6 conditions.
