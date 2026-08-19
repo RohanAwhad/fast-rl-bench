@@ -353,3 +353,8 @@ task. Next: SciKnowEval, same 6 conditions.
 - **duet**: launched directly at full budget -- the group-finalization fix is
   task-agnostic (core dispatcher/train_sink logic), already validated on
   reverse-text, no reason to expect a different failure mode here.
+  SUCCESS: 25/25 steps, 253.0s. Varying Trainable counts (96/120, 96/144,
+  120/120) confirm adaptive resizing + the finalization fix both work
+  correctly here too. Reward ~0.32-0.60 (noisier than baseline's 0.51-0.69 at
+  the same steps -- plausible run-to-run variance at this step count/cold
+  start, not necessarily a mechanism effect).
