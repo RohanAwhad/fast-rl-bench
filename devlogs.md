@@ -294,3 +294,11 @@ calibrate, run all 12, evaluate, plot, write the report.
 - **reverse_text experience_replay**: shares `_process_batch_replay` exactly
   with difficulty_targeted (just no `difficulty_band` filter, simpler case)
   -- skipped a separate smoke test, went straight to the full 30-step run.
+  SUCCESS: 30/30 steps, 209.7s (under budget), final reward ~0.75-0.79.
+  Batches shrink near the tail (steps 28-30: 48, 64, 16) -- benign end-of-run
+  wind-down (dispatcher stops starting new groups as max_steps approaches,
+  "Draining pipeline" at the end), unrelated to difficulty_targeted's
+  filter-driven shrinkage cause.
+- **reverse_text mu_grpo**: most complex remaining mechanism (fresh/replay
+  *cycling*, `EFFRL_MUGRPO_CYCLE_K=4`, first live exercise) -- smoke-testing
+  before the full run.
