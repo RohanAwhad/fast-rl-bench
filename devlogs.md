@@ -569,3 +569,41 @@ budget.
 
 **All 12 (task x condition) runs now fully trained and evaluated.** Next:
 `collect_metrics.py` + `make_plots.py`, then fill in report.md.
+
+## Project complete
+
+`collect_metrics.py` + `make_plots.py` run against all 12 runs' real
+`metrics.jsonl` + eval JSONs (final numbers cross-checked in
+`analysis/results/collected_metrics_summary.csv`); figures + summary tables
+copied into `report/figures/`; `report/report.md` filled in end-to-end
+(Abstract, 3.1/3.2 Results, 4. Discussion) with the real numbers -- no
+placeholder text remains. Remote node cleaned up (no tmux sessions, 0 GPU
+memory in use). All artifacts (report, figures, collected metrics, raw
+per-condition eval traces/logs) committed and pushed to
+`https://github.com/RohanAwhad/fast-rl-bench`.
+
+Headline results:
+- **reverse-text** (warm start, continuous reward): all 6 conditions
+  converge to 0.77-0.83 eval reward; the 3 replay-based conditions
+  (difficulty_targeted/experience_replay/mu_grpo) get there in ~23% less
+  training wall-clock -- a clean win for the replay-based papers' claims.
+- **sciknoweval** (cold start, binary reward): the same 3 replay-based
+  conditions *underperform* baseline/duet/greso by 6-11 accuracy points
+  (0.46-0.49 vs. 0.54-0.57); difficulty_targeted specifically hits a
+  cold-start bootstrapping trap (its difficulty-band filter drops
+  ~everything early on, since an untrained model fails ~everything,
+  starving its own replay buffer).
+- GRESO is the standout mechanism: on both tasks it saves wall-clock (or
+  skips wasted generation) while matching-or-beating baseline quality --
+  the only one of the 5 with no quality trade-off on either task.
+
+Real bugs found and fixed along the way (all documented above in detail):
+a DUET group-finalization bug in `train_sink.py` (dynamic vs. static group
+size) that caused unbounded buffering; a stale-guide `vf-eval` vs. v1 `eval`
+CLI mismatch for reverse-text evaluation, plus that CLI's own defaults
+(bash harness + Prime cloud sandbox) silently evaluating a different
+interaction than what was trained, both caught via `--dry-run` config
+dumps and source reading rather than guessing from `--help` text; a
+sciknoweval eval 404 that looked like a vLLM readiness race but was
+actually a self-inflicted concurrent-git-pull race across two parallel ssh
+sessions.
