@@ -27,6 +27,9 @@ tmux kill-session -t "$SESSION" 2>/dev/null || true
 
 echo "Running $N calibration steps for $TASK..."
 tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && export CUDA_VISIBLE_DEVICES=0,1 && timeout --kill-after=30 900 uv run --no-sync rl @ $TOML --max-steps $N --output-dir outputs --run.name $RUN_NAME --ckpt.interval 999999 > $TRACK_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $TRACK_DIR/launch.log"
+# This node's tmux.conf sets remain-on-exit -- override for this session so
+# `tmux has-session` below actually goes false once the command finishes.
+tmux set-option -t "$SESSION" remain-on-exit off 2>/dev/null || true
 
 echo "tmux session: $SESSION -- waiting for it to finish (up to 15 min)..."
 for _ in $(seq 1 180); do

@@ -100,6 +100,9 @@ SESSION="run-${RUN_NAME}"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 
 tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && source $ENV_FILE && (date +%s.%N > $TRACK_DIR/launch_start.ts) && timeout --kill-after=60 $OUTER_TIMEOUT uv run --no-sync rl @ $TOML --max-steps $MAX_STEPS --output-dir outputs --run.name $RUN_NAME > $TRACK_DIR/launch.log 2>&1; echo EXIT_CODE_\$? >> $TRACK_DIR/launch.log"
+# This node's tmux.conf sets remain-on-exit -- override for this session so
+# a `tmux has-session` wait-loop actually goes false once the command finishes.
+tmux set-option -t "$SESSION" remain-on-exit off 2>/dev/null || true
 
 echo "tmux session: $SESSION (attach with: tmux attach -t $SESSION)"
 echo "log: $TRACK_DIR/launch.log"
