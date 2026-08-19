@@ -406,3 +406,10 @@ task. Next: SciKnowEval, same 6 conditions.
   much noisier/slower learning than baseline/DUET/GRESO on this task --
   an honest, reportable result of combining narrow difficulty-band
   selection with a cold-start binary-reward model, not a broken run.
+- **experience_replay**: uses plain `base.toml` (no `difficulty_band`
+  filter) -- confirmed via `run_condition.sh`, so it can't hit
+  difficulty_targeted's cold-start trap; launched directly at full budget,
+  no smoke test needed. SUCCESS: 25/25 steps, 226.7s. Reward trajectory
+  noisy but healthy and gradually climbing (0.125 -> peaks of 0.72/0.53,
+  no long runs of exact 0) -- confirms the trap is specific to the
+  difficulty-band filter, not replay itself.
