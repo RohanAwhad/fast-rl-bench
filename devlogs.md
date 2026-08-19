@@ -512,3 +512,27 @@ within a tight 0.77-0.83 band -- combined with the training-time numbers
 mu_grpo ~200-215s), this is a clean efficiency result: the three
 replay-based mechanisms reach equivalent final quality in ~20-25% less
 training wall-clock than baseline/DUET/GRESO on this task.
+
+### sciknoweval eval: the "fixed" health check still 404'd once -- self-inflicted git-pull race, not a deeper bug
+
+Re-running the fixed `eval_sciknoweval.sh` sweep hit the *identical* `model
+does not exist` 404 on baseline's very first request, despite the hardened
+health check. Delegated a focused analysis of `eval_sciknoweval.py`'s
+dispatch: confirmed `asyncio.as_completed(jobs)` really does eagerly
+`ensure_future` *all* 800 coroutines in one synchronous pass on first
+`next()`, so the first ~32 (the semaphore width) do fire as a genuine
+simultaneous burst, not a ramp-up -- a real thundering-herd shape. Tested
+this directly: after a single sequential health-check request first
+succeeded (t=48s), immediately fired 32 concurrent requests at the same
+server -- **all 32 succeeded**, no 404s. This empirically rules out "single
+success doesn't imply concurrent-burst readiness" as the cause.
+Most likely actual cause: **the two eval sweeps were launched as parallel
+ssh sessions sharing the same `~/fast-rl-bench` checkout, and only the
+reverse-text one ran `git pull` first** -- the sciknoweval sweep started
+reading `scripts/eval_sciknoweval.sh` with no explicit pull of its own,
+racing the concurrent pull happening in the other session, and plausibly
+executed against a stale/partially-written copy of the script (still using
+the old naive `/v1/models` check). Fix: don't run two sweeps that share a
+mutable git checkout concurrently without pulling once, sequentially,
+first. Re-running sciknoweval's sweep solo (no concurrent pull) after an
+explicit, isolated `git pull`.
