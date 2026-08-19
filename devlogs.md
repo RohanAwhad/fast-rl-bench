@@ -499,5 +499,16 @@ cleaned up manually).
    (equivalent of the old `--max-tokens`); `summarize_vfeval_results.py`
    rewritten for the v1 CLI's `traces.jsonl` schema (episode-level
    `{id, env, ok, errors, traces: [...]}`, per-trace `rewards: {name:
-   {score, weight}}` -- summed per episode, then averaged, matching the old
-   "avg reward" semantics).
+  {score, weight}}` -- summed per episode, then averaged, matching the old
+  "avg reward" semantics).
+
+### reverse-text: all 6 final evals complete (20 tasks x 3 rollouts each)
+
+All `n_not_ok: 0` (zero failed rollouts across all 360 total rollouts).
+`overall_reward`: baseline 0.807, duet 0.801, greso 0.829,
+difficulty_targeted 0.784, experience_replay 0.773, mu_grpo 0.797. All
+within a tight 0.77-0.83 band -- combined with the training-time numbers
+(baseline/duet/greso ~260-270s vs. difficulty_targeted/experience_replay/
+mu_grpo ~200-215s), this is a clean efficiency result: the three
+replay-based mechanisms reach equivalent final quality in ~20-25% less
+training wall-clock than baseline/DUET/GRESO on this task.
