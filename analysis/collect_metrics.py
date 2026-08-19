@@ -33,29 +33,30 @@ def load_metrics_jsonl(path: Path) -> list[dict]:
     return rows
 
 
-def first_rollout_ts(launch_log: Path) -> float | None:
-    """Best-effort: first orchestrator log timestamp that mentions dispatch
-    of rollouts (used to compute "time since start of first rollout" for the
-    5-minute-budget verification). Falls back to None if unavailable --
-    callers should treat that as "use launch_start.ts instead"."""
-    if not launch_log.exists():
-        return None
-    return None  # placeholder: timestamp parsing done via launch_start.ts + step times instead
-
-
 def summarize_run(run_dir: Path) -> dict:
+    """NOTE on metrics.jsonl shape (verified against a real run): the orchestrator
+    AND the trainer both append rows to the same metrics.jsonl, and both use a
+    "step" field with overlapping/restarting numbering, so naively summing every
+    row's "time/step" double-counts (trainer emits several sub-rows per orchestrator
+    step with a *different* meaning of time/step - its own microbatch/optim timing).
+    The orchestrator's own per-step row is uniquely identifiable as the row that
+    carries the aggregate reward key (train/agg/{effective,all}/agent/reward/mean) --
+    only those rows' "time/step" match the "Step N | Xs |" line in orchestrator.log
+    (this is what calibrate.sh's log-parsing measures, and it matches these values
+    exactly), so we filter to those rows before summing/reading step numbers."""
     metrics_path = run_dir / "metrics.jsonl"
     rows = load_metrics_jsonl(metrics_path)
-    train_rows = [r for r in rows if "train/agg/effective/reward/mean" in r or "train/agg/all/reward/mean" in r]
+
     reward_key = None
-    for candidate in ("train/agg/effective/reward/mean", "train/agg/all/reward/mean"):
-        if any(candidate in r for r in train_rows):
+    for candidate in ("train/agg/effective/agent/reward/mean", "train/agg/all/agent/reward/mean"):
+        if any(candidate in r for r in rows):
             reward_key = candidate
             break
 
-    step_times = [r.get("time/step") for r in rows if "time/step" in r]
-    steps = [r.get("step") for r in rows if "step" in r]
-    total_training_time_s = sum(t for t in step_times if isinstance(t, (int, float)))
+    orch_rows = [r for r in rows if reward_key and reward_key in r]
+    step_times = [r["time/step"] for r in orch_rows if isinstance(r.get("time/step"), (int, float))]
+    steps = [r["step"] for r in orch_rows if "step" in r]
+    total_training_time_s = sum(step_times)
 
     launch_start_file = run_dir / "launch_start.ts"
     launch_start = None
@@ -65,15 +66,18 @@ def summarize_run(run_dir: Path) -> dict:
         except ValueError:
             pass
 
-    reward_curve = []
+    # dedupe by step (keep the last row seen for a given step, in case of restarts/reruns)
+    reward_by_step: dict[int, float] = {}
     if reward_key:
-        for r in rows:
-            if "step" in r and reward_key in r:
-                reward_curve.append({"step": r["step"], "reward": r[reward_key]})
+        for r in orch_rows:
+            if "step" in r:
+                reward_by_step[r["step"]] = r[reward_key]
+    reward_curve = [{"step": s, "reward": reward_by_step[s]} for s in sorted(reward_by_step)]
 
     return {
         "run_dir": str(run_dir),
         "n_metric_rows": len(rows),
+        "n_orchestrator_rows": len(orch_rows),
         "max_step": max(steps) if steps else None,
         "reward_key_used": reward_key,
         "final_reward": reward_curve[-1]["reward"] if reward_curve else None,
