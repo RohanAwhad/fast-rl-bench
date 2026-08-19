@@ -21,7 +21,7 @@ fi
 
 SESSION="eval-${RUN_NAME}"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
-tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && CUDA_VISIBLE_DEVICES=$GPU uv run --no-sync inference --model.name $WEIGHTS --server.port 18100 > /tmp/${RUN_NAME}_eval_server.log 2>&1"
+tmux new-session -d -s "$SESSION" "cd $PRIME_RL_DIR && CUDA_VISIBLE_DEVICES=$GPU uv run --no-sync inference --vllm.model $WEIGHTS --server.port 18100 > /tmp/${RUN_NAME}_eval_server.log 2>&1"
 
 echo "Waiting for eval inference server (port 18100)..."
 for _ in $(seq 1 60); do
@@ -36,7 +36,7 @@ cd "$PRIME_RL_DIR"
 uv run --no-sync vf-eval reverse-text \
   -m "$WEIGHTS" \
   -b http://localhost:18100/v1 \
-  -n 20 --max-tokens 1024 \
+  -n 20 -r 3 --max-tokens 1024 \
   2>&1 | tee "$RESULTS_DIR/${RUN_NAME}_step${STEP}_vfeval.log"
 
 tmux kill-session -t "$SESSION" 2>/dev/null || true
