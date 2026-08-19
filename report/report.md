@@ -54,8 +54,19 @@ outer `timeout` sized generously above the expected total (startup +
 training + checkpoint export) as a safety net against hangs, not as the
 primary cutoff mechanism.
 
-Reverse-text calibration: *(filled in)*
-SciKnowEval calibration: *(filled in)*
+Reverse-text calibration (baseline config, 15 steps, 2x L40S): steady-state
+avg 8.94s/step after a 21.1s warmup (first 2 steps) -> **`--max-steps 30`**
+(~271s training-loop time).
+
+SciKnowEval calibration (baseline config, 15 steps, cold start): steady-state
+avg 10.85s/step after a 22.7s warmup -> **`--max-steps 25`** (~272s
+training-loop time). Slower per-step than reverse-text, consistent with its
+longer `max_completion_tokens` (256 vs. 128).
+
+The same step budget is applied to all 6 conditions of a task: baseline does
+the most generation work per step of any condition (nothing is skipped or
+reused), so it is a conservative ceiling — variants that skip/reuse rollouts
+should train in equal or less wall-clock time for the same step count.
 
 ### 2.3 Conditions
 
