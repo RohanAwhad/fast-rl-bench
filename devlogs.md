@@ -130,3 +130,41 @@ Next: write the `efficient_rl` patch package + patched `dispatcher.py`/
 (copied from `isdpo_reprod` with attribution), 12 TOML configs (6 conditions x
 2 tasks), deploy + run + eval + metrics-collection scripts. Then deploy,
 calibrate, run all 12, evaluate, plot, write the report.
+
+## 2026-08-19 — Patch built, deployed, calibrated
+
+- All 5 patch mechanisms + sciknoweval env + 12 configs written locally,
+  deployed to remote `~/prime-rl` (manual tar+ssh copy for the patch files;
+  remote clones `fast-rl-bench` itself via git for scripts/configs). All
+  imports verified OK on remote (`efficient_rl`, `sciknoweval`, patched
+  orchestrator modules).
+- Fixed several setup bugs serially: submodule SSH URLs need
+  `insteadOf https://`, `uv sync` needs `--all-packages --extra flash-attn
+  --extra disagg` (the `vllm-router` binary is in the `disagg` extra even for
+  single-node), `rl` CLI's `--output-dir`+`--run.name` double-nest if you pass
+  `outputs/<name>` as output-dir, `validate_run_dir` throws `FileExistsError`
+  if our own tracking files live inside prime-rl's run dir (moved to
+  `outputs/_runlogs/<run>/` instead), `vf-eval`/`inference` CLI flags differ
+  from what the reference gists show.
+- **Calibration timing bug**: `calibrate.sh` was parsing `trainer.log`'s
+  step time (GPU compute only) instead of `orchestrator.log`'s
+  `Step N | Xs |` line (true end-to-end rollout+train cycle time — the right
+  signal for the 5-min *training time* budget). Fixed.
+- **tmux gotcha**: this node's `.tmux.conf` sets `remain-on-exit on` globally,
+  so a finished session doesn't disappear from `tmux ls` and a
+  `tmux has-session` wait-loop never returns false. Fixed by
+  `tmux set-option -t <session> remain-on-exit off` right after creating each
+  run/calibration session.
+- Confirmed pipeline end-to-end on reverse-text baseline: reward climbs
+  0.11 -> 0.81 over 15 steps (noisy but clearly learning).
+- **Reverse-text calibration (15 steps, L40S x2, baseline config)**:
+  per-step times noisy (dispatcher pause/resume for policy sync dominates):
+  17.9, 3.2, 4.4, 27.8, 5.3, 7.3, 3.8, 15.6, ..., 6.3, 6.4, 16.4, 6.4, 4.8s.
+  Total 137.3s/15 steps. Warmup (first 2 steps) = 21.1s. Steady-state avg =
+  8.94s/step. -> **RECOMMENDED_MAX_STEPS=30** for reverse-text (all 6
+  conditions), targeting ~271s training-loop time (29s margin under 300s cap).
+- Built `scripts/run_all_conditions.sh` to sequence baseline + 5 patch
+  conditions for a task automatically (only 2 GPUs on this node, so runs
+  cannot be parallelized across conditions — must be strictly sequential).
+- Next: calibrate sciknoweval the same way, then launch
+  `run_all_conditions.sh` for both tasks, then evaluate all 12 checkpoints.
