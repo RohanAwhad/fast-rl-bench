@@ -1,0 +1,9 @@
+{
+  "summary": {
+    "model": "outputs/reverse_text-greso/weights/step_30",
+    "n_rows": 60,
+    "n_not_ok": 0,
+    "overall_reward": 0.8286295303493242
+  },
+  "traces_jsonl": "/home/ronny_romeo/fast-rl-bench/analysis/results/vfeval_raw/reverse_text-greso_step30/reverse-text--outputs--reverse_text-greso--weights--step_30--null--b4f418f3/traces.jsonl"
+}

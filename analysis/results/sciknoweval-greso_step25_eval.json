@@ -1,0 +1,4817 @@
+{
+  "summary": {
+    "model": "sciknoweval-greso-step25",
+    "n_questions": 800,
+    "n_samples": 1,
+    "n_rows": 800,
+    "overall_accuracy": 0.56875,
+    "per_domain_accuracy": {
+      "Physics": 0.555,
+      "Chemistry": 0.565,
+      "Material": 0.51,
+      "Biology": 0.645
+    }
+  },
+  "rows": [
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "B",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "A",
+      "predicted": "D",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Material",
+      "answer_key": "D",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "A",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "C",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "D",
+      "predicted": "D",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "C",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "A",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "B",
+      "predicted": "",
+      "correct": false
+    },
+    {
+      "domain": "Material",
+      "answer_key": "B",
+      "predicted": "A",
+      "correct": false
+    },
+    {
+      "domain": "Biology",
+      "answer_key": "B",
+      "predicted": "B",
+      "correct": true
+    },
+    {
+      "domain": "Chemistry",
+      "answer_key": "C",
+      "predicted": "C",
+      "correct": true
+    },
+    {
+      "domain": "Physics",
+      "answer_key": "C",
+      "predicted": "",
+      "correct": false
+    }
+  ]
+}

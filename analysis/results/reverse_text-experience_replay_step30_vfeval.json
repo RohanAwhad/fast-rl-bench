@@ -1,0 +1,9 @@
+{
+  "summary": {
+    "model": "outputs/reverse_text-experience_replay/weights/step_30",
+    "n_rows": 60,
+    "n_not_ok": 0,
+    "overall_reward": 0.772592036120138
+  },
+  "traces_jsonl": "/home/ronny_romeo/fast-rl-bench/analysis/results/vfeval_raw/reverse_text-experience_replay_step30/reverse-text--outputs--reverse_text-experience_replay--weights--step_30--null--3990e6ed/traces.jsonl"
+}

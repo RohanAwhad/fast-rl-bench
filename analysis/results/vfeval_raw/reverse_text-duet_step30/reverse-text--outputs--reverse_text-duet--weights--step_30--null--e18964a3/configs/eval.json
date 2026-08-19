@@ -1,0 +1,97 @@
+{
+  "env": {
+    "id": "",
+    "taskset": {
+      "id": "reverse-text",
+      "task": {
+        "judges": [],
+        "stops": {},
+        "metrics": {},
+        "rewards": {}
+      },
+      "system_prompt": null,
+      "dataset_name": "PrimeIntellect/Reverse-Text-RL",
+      "dataset_split": "train"
+    },
+    "timeout": {
+      "episode": null,
+      "finalize": null
+    },
+    "retries": {
+      "max_retries": 0,
+      "include": [],
+      "exclude": []
+    },
+    "max_concurrent_agents": 1,
+    "interception": {
+      "type": "elastic",
+      "multiplex": 32
+    },
+    "agent": {
+      "harness": {
+        "id": "null",
+        "env": {},
+        "forward_env": [],
+        "tool_timeout": 600.0,
+        "disabled_tools": null,
+        "skills": []
+      },
+      "runtime": {
+        "type": "subprocess"
+      },
+      "model": null,
+      "client": null,
+      "sampling": null,
+      "max_turns": null,
+      "max_input_tokens": null,
+      "max_output_tokens": 1024,
+      "max_total_tokens": null,
+      "timeout": {
+        "setup": null,
+        "rollout": null,
+        "finalize": null,
+        "scoring": null
+      },
+      "retries": {
+        "max_retries": 0,
+        "include": [],
+        "exclude": []
+      }
+    }
+  },
+  "serve": {
+    "pool": {
+      "type": "elastic",
+      "max_workers": null,
+      "multiplex": 128
+    },
+    "address": null,
+    "max_concurrent": null
+  },
+  "run": {
+    "name": "reverse-text--outputs--reverse_text-duet--weights--step_30--null--e18964a3",
+    "dir": "reverse-text--outputs--reverse_text-duet--weights--step_30--null--e18964a3"
+  },
+  "model": "outputs/reverse_text-duet/weights/step_30",
+  "client": {
+    "base_url": "http://localhost:18100/v1",
+    "api_key_var": "DUMMY_API_KEY",
+    "headers": {},
+    "type": "eval"
+  },
+  "sampling": {
+    "temperature": null,
+    "top_p": null,
+    "reasoning_effort": null,
+    "max_tokens": null
+  },
+  "num_tasks": 20,
+  "num_rollouts": 3,
+  "shuffle": false,
+  "max_concurrent": 128,
+  "verbose": false,
+  "rich": false,
+  "server": false,
+  "push": false,
+  "output_dir": "/home/ronny_romeo/fast-rl-bench/analysis/results/vfeval_raw/reverse_text-duet_step30"
+}

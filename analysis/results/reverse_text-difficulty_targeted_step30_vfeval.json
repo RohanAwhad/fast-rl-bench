@@ -1,0 +1,9 @@
+{
+  "summary": {
+    "model": "outputs/reverse_text-difficulty_targeted/weights/step_30",
+    "n_rows": 60,
+    "n_not_ok": 0,
+    "overall_reward": 0.7841618499037377
+  },
+  "traces_jsonl": "/home/ronny_romeo/fast-rl-bench/analysis/results/vfeval_raw/reverse_text-difficulty_targeted_step30/reverse-text--outputs--reverse_text-difficulty_targeted--weights--step_30--null--797e89b1/traces.jsonl"
+}

@@ -1,0 +1,9 @@
+{
+  "summary": {
+    "model": "outputs/reverse_text-baseline/weights/step_30",
+    "n_rows": 60,
+    "n_not_ok": 0,
+    "overall_reward": 0.8073794247484322
+  },
+  "traces_jsonl": "/home/ronny_romeo/fast-rl-bench/analysis/results/vfeval_raw/reverse_text-baseline_step30/reverse-text--outputs--reverse_text-baseline--weights--step_30--null--45a775fa/traces.jsonl"
+}
