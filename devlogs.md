@@ -257,3 +257,17 @@ calibrate, run all 12, evaluate, plot, write the report.
     future patches: a genuinely-fresh mechanism that changes dispatcher-side
     per-group bookkeeping needs a dedicated few-step smoke test, not just a
     static import/type-check, before it's trusted with a full budgeted run.
+  - **6-step smoke test post-fix**: confirmed working -- varying, matched
+    `Trainable N/N` counts (112/112, 144/144, 120/120, ...) prove DUET is
+    genuinely resizing groups per-prompt AND that resized groups now
+    finalize correctly (100% trainable, no orphaned partials). Buffered
+    counts stayed bounded (tens, not thousands).
+  - **reverse_text DUET retry (full 30 steps)**: SUCCESS. 267.0s (under
+    budget), final reward ~0.74-0.82 -- comparable to baseline's ~0.79-0.81.
+- **reverse_text GRESO**: launched directly at full budget (30 steps) without
+  a separate smoke test -- lower risk than DUET since GRESO only changes
+  *which* example `next_fresh_group` settles on (bounded retry against the
+  utility tracker), never the group's size, so it can't hit the
+  DUET-completion-check bug class (confirmed by code inspection: the
+  `duet_group_size` call in `next_fresh_group` is gated strictly behind
+  `duet_enabled()`, independent of `greso_enabled()`).
