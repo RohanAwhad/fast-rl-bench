@@ -342,3 +342,14 @@ cluster at 260-270s; the three replay-based conditions cluster faster at
 200-215s (less generation work per step from reusing data) -- directly
 supports the papers' core efficiency claim, at least directionally, on this
 task. Next: SciKnowEval, same 6 conditions.
+
+### SciKnowEval runs
+
+- **baseline**: SUCCESS. 25/25 steps, 263.4s (under budget). Reward climbs
+  0.51-0.69 over the last 3 steps (cold start, as expected -- slower/noisier
+  than reverse-text's warm-started SFT checkpoint, matches the 15-step
+  calibration's trajectory). Trainable % dips (25-75%) as gibberish/
+  repetition/zero_advantage filters catch degenerate cold-start outputs.
+- **duet**: launched directly at full budget -- the group-finalization fix is
+  task-agnostic (core dispatcher/train_sink logic), already validated on
+  reverse-text, no reason to expect a different failure mode here.
