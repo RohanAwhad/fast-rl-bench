@@ -358,3 +358,13 @@ task. Next: SciKnowEval, same 6 conditions.
   correctly here too. Reward ~0.32-0.60 (noisier than baseline's 0.51-0.69 at
   the same steps -- plausible run-to-run variance at this step count/cold
   start, not necessarily a mechanism effect).
+- **greso**: SUCCESS. 25/25 steps, 263.5s. Reward ~0.44-0.71-0.55 (noisy but
+  healthy). Trainable count drops toward the tail (64,32,16/128) -- same
+  benign end-of-run wind-down pattern seen on reverse-text's
+  experience_replay, unrelated to GRESO's own mechanism.
+- **difficulty_targeted**: first time this filter (group-mean recovered via
+  `reward - scalar_advantage()`) meets a genuinely *binary* {0,1} reward
+  (vs. reverse-text's continuous LCS ratio) on a cold-start model -- the
+  discrete group-mean distribution (multiples of 1/16 for group_size=16)
+  interacting with the fixed [0.15, 0.85] band is untested territory.
+  Smoke-testing (6 steps) before the full run as a precaution.
