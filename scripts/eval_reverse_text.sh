@@ -10,9 +10,12 @@ RUN_NAME="${1:?run_name, e.g. reverse_text-baseline}"
 STEP="${2:?checkpoint step, e.g. 40}"
 GPU="${3:-0}"
 PRIME_RL_DIR="${PRIME_RL_DIR:-$HOME/prime-rl}"
+REPO_DIR="${REPO_DIR:-$HOME/fast-rl-bench}"
 WEIGHTS="outputs/${RUN_NAME}/weights/step_${STEP}"
-RESULTS_DIR="$HOME/fast-rl-bench/analysis/results"
+RESULTS_DIR="$REPO_DIR/analysis/results"
+VFEVAL_RAW_DIR="$RESULTS_DIR/vfeval_raw/${RUN_NAME}_step${STEP}"
 mkdir -p "$RESULTS_DIR"
+rm -rf "$VFEVAL_RAW_DIR"
 
 if [ ! -d "$PRIME_RL_DIR/$WEIGHTS" ]; then
   echo "weights not found: $PRIME_RL_DIR/$WEIGHTS" >&2
@@ -37,7 +40,13 @@ uv run --no-sync vf-eval reverse-text \
   -m "$WEIGHTS" \
   -b http://localhost:18100/v1 \
   -n 20 -r 3 --max-tokens 1024 \
+  --save-results --output-dir "$VFEVAL_RAW_DIR" --disable-tui \
   2>&1 | tee "$RESULTS_DIR/${RUN_NAME}_step${STEP}_vfeval.log"
 
 tmux kill-session -t "$SESSION" 2>/dev/null || true
-echo "done: $RESULTS_DIR/${RUN_NAME}_step${STEP}_vfeval.log"
+
+uv run --no-sync python3 "$REPO_DIR/scripts/summarize_vfeval_results.py" \
+  "$VFEVAL_RAW_DIR" --model "$WEIGHTS" \
+  --out "$RESULTS_DIR/${RUN_NAME}_step${STEP}_vfeval.json"
+
+echo "done: $RESULTS_DIR/${RUN_NAME}_step${STEP}_vfeval.json"

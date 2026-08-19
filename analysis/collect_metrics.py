@@ -68,11 +68,23 @@ def summarize_run(run_dir: Path) -> dict:
 
     # dedupe by step (keep the last row seen for a given step, in case of restarts/reruns)
     reward_by_step: dict[int, float] = {}
+    time_by_step: dict[int, float] = {}
     if reward_key:
         for r in orch_rows:
             if "step" in r:
                 reward_by_step[r["step"]] = r[reward_key]
+                if isinstance(r.get("time/step"), (int, float)):
+                    time_by_step[r["step"]] = r["time/step"]
     reward_curve = [{"step": s, "reward": reward_by_step[s]} for s in sorted(reward_by_step)]
+
+    # Cumulative wall-clock (sum of per-step time up to and including each step),
+    # for "reward vs. training wall-clock" plots. String-keyed since this dict
+    # round-trips through JSON (int keys become strings there anyway).
+    cumulative_step_times: dict[str, float] = {}
+    running_total = 0.0
+    for s in sorted(time_by_step):
+        running_total += time_by_step[s]
+        cumulative_step_times[str(s)] = running_total
 
     return {
         "run_dir": str(run_dir),
@@ -84,18 +96,50 @@ def summarize_run(run_dir: Path) -> dict:
         "total_step_time_s": total_training_time_s,
         "launch_start_epoch": launch_start,
         "reward_curve": reward_curve,
+        "cumulative_step_times": cumulative_step_times,
     }
+
+
+def find_eval_summary(results_dir: Path, run_name: str) -> dict | None:
+    """Find this run's eval JSON (written by eval_reverse_text.sh /
+    eval_sciknoweval.sh, both under analysis/results/) and pull out a single
+    scalar headline metric + which checkpoint step it was measured on.
+    Picks the highest checkpoint step found if more than one eval was run for
+    this condition. Returns None if no eval result exists yet."""
+    candidates = sorted(results_dir.glob(f"{run_name}_step*_*.json"))
+    if not candidates:
+        return None
+
+    def step_of(p: Path) -> int:
+        # <run_name>_step<N>_{vfeval,eval}.json
+        stem = p.stem[len(run_name) + len("_step") :]
+        digits = stem.split("_")[0]
+        return int(digits) if digits.isdigit() else -1
+
+    best = max(candidates, key=step_of)
+    with open(best) as f:
+        data = json.load(f)
+    summary = data.get("summary", {})
+    # reverse-text (vf-eval) uses "overall_reward"; sciknoweval uses "overall_accuracy"
+    metric = summary.get("overall_accuracy", summary.get("overall_reward"))
+    return {"eval_metric": metric, "eval_step": step_of(best), "eval_source": str(best)}
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--outputs-dir", required=True, help="prime-rl outputs/ dir (contains one subdir per run)")
     ap.add_argument("--out-dir", required=True, help="where to write collected_metrics.csv / .json")
+    ap.add_argument(
+        "--eval-results-dir",
+        default=None,
+        help="analysis/results/ dir with eval_*.sh outputs (default: <out-dir>)",
+    )
     args = ap.parse_args()
 
     outputs_dir = Path(args.outputs_dir).expanduser()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    eval_results_dir = Path(args.eval_results_dir).expanduser() if args.eval_results_dir else out_dir
 
     summaries: dict[str, dict] = {}
     for task in TASKS:
@@ -107,16 +151,28 @@ def main() -> None:
             summaries[run_name] = summarize_run(run_dir)
             summaries[run_name]["task"] = task
             summaries[run_name]["condition"] = condition
+            eval_summary = find_eval_summary(eval_results_dir, run_name)
+            if eval_summary:
+                summaries[run_name].update(eval_summary)
 
     with open(out_dir / "collected_metrics.json", "w") as f:
         json.dump(summaries, f, indent=2)
 
     with open(out_dir / "collected_metrics_summary.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["task", "condition", "max_step", "final_reward", "total_step_time_s", "n_metric_rows"])
+        writer.writerow(["task", "condition", "max_step", "final_reward", "total_step_time_s", "eval_metric", "eval_step", "n_metric_rows"])
         for run_name, s in sorted(summaries.items()):
             writer.writerow(
-                [s["task"], s["condition"], s["max_step"], s["final_reward"], round(s["total_step_time_s"], 1), s["n_metric_rows"]]
+                [
+                    s["task"],
+                    s["condition"],
+                    s["max_step"],
+                    s["final_reward"],
+                    round(s["total_step_time_s"], 1),
+                    s.get("eval_metric"),
+                    s.get("eval_step"),
+                    s["n_metric_rows"],
+                ]
             )
 
     # Long-format reward curves (one row per step per run) for plotting.

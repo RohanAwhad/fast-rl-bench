@@ -166,5 +166,56 @@ calibrate, run all 12, evaluate, plot, write the report.
 - Built `scripts/run_all_conditions.sh` to sequence baseline + 5 patch
   conditions for a task automatically (only 2 GPUs on this node, so runs
   cannot be parallelized across conditions — must be strictly sequential).
-- Next: calibrate sciknoweval the same way, then launch
-  `run_all_conditions.sh` for both tasks, then evaluate all 12 checkpoints.
+- **SciKnowEval calibration (15 steps, cold start)**: reward climbs slower
+  than reverse-text (cold start vs. warm SFT ckpt), reaches 0.53 by step 15,
+  `Trainable` % dips as low as 75% (gibberish/repetition/zero_advantage
+  filters actively dropping rollouts from an untuned base model, as
+  expected). Total 163.8s/15 steps, warmup=22.7s, steady-state avg=
+  10.85s/step (slower per-step than reverse-text, consistent with longer
+  `max_completion_tokens=256`). -> **RECOMMENDED_MAX_STEPS=25**, targeting
+  ~272s training-loop time.
+- **Verified `metrics.jsonl` schema against a real run** (important: my
+  original placeholder key names in `collect_metrics.py` were wrong). Real
+  keys: `train/agg/effective/agent/reward/mean` (trainable-only) and
+  `train/agg/all/agent/reward/mean` (includes filtered), both nested under
+  `.../agent/...`, not the flatter names I'd guessed. Also confirmed the
+  orchestrator AND trainer both write rows into the same metrics.jsonl file
+  with overlapping/restarting "step" numbers (90 total rows for a 15-step
+  run) -- naively summing every row's `time/step` would double/triple count;
+  fixed by filtering to only rows carrying the aggregate reward key (which
+  1:1-match the orchestrator.log "Step N" lines used for calibration).
+  Fixed `collect_metrics.py` accordingly; verified the fixed version
+  reproduces calibrate.sh's own total (137.29s vs. calibrate.sh's 137.3s)
+  against the reverse-text-calib run.
+- Rewrote `analysis/verify_time_budget.py`: it had the same class of bug as
+  the original calibrate.sh (was reading trainer.log's own differently-scoped
+  "Step N" line + naive wall-clock first/last-log-timestamp delta, which
+  would include dispatcher backpressure/pause time -- confirmed from real
+  logs that the orchestrator's self-reported per-step "Xs" already *excludes*
+  that idle time, e.g. a 14s wall-clock gap between two "Step N" lines
+  reported as only 4.4s of actual step time). Now sums orchestrator.log's own
+  "Step N | Xs |" values, matching calibrate.sh's methodology exactly so the
+  budget check is self-consistent with how max_steps was derived.
+- Found `make_plots.py` referenced two fields `collect_metrics.py` never
+  produced (`cumulative_step_times`, `eval_metric`) -- would have silently
+  produced empty "reward vs. wall-clock" plots and blank eval columns after
+  all 12 runs. Fixed: `summarize_run()` now also emits
+  `cumulative_step_times` (running sum keyed by step); added
+  `find_eval_summary()` to merge in the eval script's JSON output.
+- Read `vf-eval`'s actual implementation (`verifiers/legacy/scripts/eval.py`
+  + `save_utils.py`) rather than guessing its output format: `--save-results
+  --output-dir <dir>` writes `results.jsonl` (one row per rollout, each a
+  `RolloutOutput` dict with a top-level `"reward": float`) under a
+  self-named subdirectory of `<dir>`. Added `scripts/summarize_vfeval_results.py`
+  to glob for it and reduce to the same `{"summary": {...}}` JSON shape
+  `eval_sciknoweval.py` already produces (`overall_reward` vs. sciknoweval's
+  `overall_accuracy` -- reverse-text's reward is continuous LCS ratio, not
+  binary, so it isn't an "accuracy"). Wired into `eval_reverse_text.sh`.
+- Verified end-to-end: checkpoint dir naming is `weights/step_<N>/` (matches
+  both eval scripts' assumptions); `uv run --no-sync vllm serve` works in the
+  synced env (needed by `eval_sciknoweval.sh`); `sciknoweval.taskset`'s
+  `SciKnowEvalData` field names (`prompt`, `system_prompt`, `answer_key`,
+  `domain`) match what `eval_sciknoweval.py` reads off `task.data`.
+- Calibration numbers: **reverse_text max_steps=30, sciknoweval max_steps=25**.
+- Next: launch `run_all_conditions.sh` for both tasks (sequential, 2 GPUs
+  only), then evaluate all 12 checkpoints, collect metrics, plot, write report.
