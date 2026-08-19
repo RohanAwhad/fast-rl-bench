@@ -368,3 +368,28 @@ task. Next: SciKnowEval, same 6 conditions.
   discrete group-mean distribution (multiples of 1/16 for group_size=16)
   interacting with the fixed [0.15, 0.85] band is untested territory.
   Smoke-testing (6 steps) before the full run as a precaution.
+  **Finding (not a bug -- a real mechanism limitation)**: the smoke test
+  reveals a cold-start bootstrapping trap. Step 1 shows some signal (16/80
+  trainable, reward 0.10), but steps 2-5 all show **0/N trainable, reward
+  0.0** with prime-rl's own built-in warning repeating: "Only 0/N effective
+  rollouts are trainable (0.0%) -- consider reviewing task difficulty/filter
+  config." Root cause: `apply_filters` runs before `fresh_samples` is built
+  in `_process_batch_replay` (`if r.is_filtered: continue` -- filtered
+  rollouts never become `fresh_samples`, so they never reach
+  `replay.admit()` either). An untrained 0.6B model attempting 4-way
+  scientific MCQ frequently can't even emit a parseable A-D letter yet, so
+  most groups score group_mean=0.0 exactly -- universally below the
+  `difficulty_band`'s `low=0.15` floor ("too hard"). Every such group is
+  dropped *before* ever reaching the replay buffer, so the buffer never gets
+  seeded and can't backfill either -- a genuine cold-start bootstrapping
+  failure mode of narrow difficulty-band selection, not specific to this
+  implementation (the mechanism implicitly assumes a reasonably-capable
+  starting policy with a natural spread of easy/medium/hard examples, which
+  a from-scratch cold start does not provide -- reverse-text's *warm-started*
+  SFT checkpoint never hits this trap since it already reliably produces
+  non-degenerate, partially-graded output).
+  **Decision**: run the full 25-step condition with the *same* `low=0.15`/
+  `high=0.85` as reverse-text (no ad-hoc threshold tuning to force a nicer
+  result) and report the outcome honestly -- this is a legitimate,
+  interesting empirical finding about the mechanism's fit to this task/model
+  combination, not something to hide or work around.
