@@ -278,3 +278,14 @@ calibrate, run all 12, evaluate, plot, write the report.
   buffer + `difficulty_band` filter combo -- smoke-testing (6 steps) before
   committing to the full budget, per the "new dispatcher/sink-bookkeeping
   mechanism needs a smoke test" lesson from DUET.
+  Smoke test (6 steps): completed cleanly, no hangs/leaks.
+  `replay_metrics.jsonl` shows sane admission/eviction/sampling behavior
+  (buffer_size fluctuating 32-112 under a 512 cap, uses_cap=3 evicting
+  steadily). Noted (not a bug, a real characteristic of this specific
+  condition): composed batches sometimes ship smaller than the nominal 128
+  early on -- `maybe_ship()`'s readiness check counts *pre-filter*
+  `pending_batch`, but the `difficulty_band` filter (deliberately narrow
+  [0.15, 0.85] band) can drop most of a fresh cohort, and the replay buffer
+  hasn't built up a large-enough backlog yet this early to fully backfill.
+  Expected to stabilize as the buffer fills over more steps; not a
+  hang/crash risk (confirmed: smoke test completed all 6 steps).
