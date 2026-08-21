@@ -124,6 +124,8 @@ async def main_async(args: argparse.Namespace) -> None:
         idx = task.data.idx
         if idx in resume_idx:
             continue
+        if args.idx_mod > 1 and idx % args.idx_mod != args.idx_shard:
+            continue
         system_prompt = task.data.system_prompt if task_name == "sciknoweval" else system_prompt_default
         coro = score_one(
             client, args.model, system_prompt, task.data.prompt,
@@ -193,6 +195,8 @@ def main() -> None:
                         help="LCS ratio at/above which a reverse-text sample counts as solved (paper assumes binary rewards)")
     parser.add_argument("--max-tokens", type=int, default=0, help="0 = task default (128 reverse_text / 256 sciknoweval)")
     parser.add_argument("--concurrency", type=int, default=32)
+    parser.add_argument("--idx-mod", type=int, default=1, help="shard profile across N servers (idx % mod == idx-shard)")
+    parser.add_argument("--idx-shard", type=int, default=0, help="this server's shard (see --idx-mod)")
     parser.add_argument("--out", required=True, help="JSONL output path (one row per query)")
     parser.add_argument("--summary-out", default=None, help="optional JSON summary path")
     parser.add_argument("--resume", action="store_true", help="skip idx already present in --out")
