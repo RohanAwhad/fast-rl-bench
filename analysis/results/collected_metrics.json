@@ -166,7 +166,7 @@
     "condition": "baseline",
     "eval_metric": 0.8073794247484322,
     "eval_step": 30,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/reverse_text-baseline_step30_vfeval.json"
+    "eval_source": "analysis/results/reverse_text-baseline_step30_vfeval.json"
   },
   "reverse_text-duet": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/reverse_text-duet",
@@ -335,7 +335,7 @@
     "condition": "duet",
     "eval_metric": 0.8010428899259855,
     "eval_step": 30,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/reverse_text-duet_step30_vfeval.json"
+    "eval_source": "analysis/results/reverse_text-duet_step30_vfeval.json"
   },
   "reverse_text-greso": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/reverse_text-greso",
@@ -504,7 +504,7 @@
     "condition": "greso",
     "eval_metric": 0.8286295303493242,
     "eval_step": 30,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/reverse_text-greso_step30_vfeval.json"
+    "eval_source": "analysis/results/reverse_text-greso_step30_vfeval.json"
   },
   "reverse_text-difficulty_targeted": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/reverse_text-difficulty_targeted",
@@ -658,7 +658,7 @@
     "condition": "difficulty_targeted",
     "eval_metric": 0.7841618499037377,
     "eval_step": 30,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/reverse_text-difficulty_targeted_step30_vfeval.json"
+    "eval_source": "analysis/results/reverse_text-difficulty_targeted_step30_vfeval.json"
   },
   "reverse_text-experience_replay": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/reverse_text-experience_replay",
@@ -827,7 +827,7 @@
     "condition": "experience_replay",
     "eval_metric": 0.772592036120138,
     "eval_step": 30,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/reverse_text-experience_replay_step30_vfeval.json"
+    "eval_source": "analysis/results/reverse_text-experience_replay_step30_vfeval.json"
   },
   "reverse_text-mu_grpo": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/reverse_text-mu_grpo",
@@ -996,7 +996,176 @@
     "condition": "mu_grpo",
     "eval_metric": 0.7974636266287873,
     "eval_step": 30,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/reverse_text-mu_grpo_step30_vfeval.json"
+    "eval_source": "analysis/results/reverse_text-mu_grpo_step30_vfeval.json"
+  },
+  "reverse_text-sgpo": {
+    "run_dir": "/home/ronny_romeo/prime-rl/outputs/reverse_text-sgpo",
+    "n_metric_rows": 180,
+    "n_orchestrator_rows": 30,
+    "max_step": 30,
+    "reward_key_used": "train/agg/effective/agent/reward/mean",
+    "final_reward": 0.7913512329600272,
+    "total_step_time_s": 253.9211218431592,
+    "launch_start_epoch": null,
+    "reward_curve": [
+      {
+        "step": 1,
+        "reward": 0.43852082926624225
+      },
+      {
+        "step": 2,
+        "reward": 0.39963598916651955
+      },
+      {
+        "step": 3,
+        "reward": 0.38731191283808275
+      },
+      {
+        "step": 4,
+        "reward": 0.4398366230092452
+      },
+      {
+        "step": 5,
+        "reward": 0.4540855937727736
+      },
+      {
+        "step": 6,
+        "reward": 0.47310245033658815
+      },
+      {
+        "step": 7,
+        "reward": 0.4557438164018317
+      },
+      {
+        "step": 8,
+        "reward": 0.5430313714860754
+      },
+      {
+        "step": 9,
+        "reward": 0.5715502022182517
+      },
+      {
+        "step": 10,
+        "reward": 0.607297348280268
+      },
+      {
+        "step": 11,
+        "reward": 0.6748605918170909
+      },
+      {
+        "step": 12,
+        "reward": 0.7206819753091814
+      },
+      {
+        "step": 13,
+        "reward": 0.7113547033743064
+      },
+      {
+        "step": 14,
+        "reward": 0.7302729434702994
+      },
+      {
+        "step": 15,
+        "reward": 0.7269283213669355
+      },
+      {
+        "step": 16,
+        "reward": 0.7267183098538113
+      },
+      {
+        "step": 17,
+        "reward": 0.7654572128351869
+      },
+      {
+        "step": 18,
+        "reward": 0.7552214019069354
+      },
+      {
+        "step": 19,
+        "reward": 0.7573245636664643
+      },
+      {
+        "step": 20,
+        "reward": 0.7565046898923043
+      },
+      {
+        "step": 21,
+        "reward": 0.7603882480256026
+      },
+      {
+        "step": 22,
+        "reward": 0.7781750993241247
+      },
+      {
+        "step": 23,
+        "reward": 0.7903752820049953
+      },
+      {
+        "step": 24,
+        "reward": 0.7712036774298529
+      },
+      {
+        "step": 25,
+        "reward": 0.7676168868557777
+      },
+      {
+        "step": 26,
+        "reward": 0.7762566538817329
+      },
+      {
+        "step": 27,
+        "reward": 0.7837789438058562
+      },
+      {
+        "step": 28,
+        "reward": 0.7946004468006683
+      },
+      {
+        "step": 29,
+        "reward": 0.76450869601573
+      },
+      {
+        "step": 30,
+        "reward": 0.7913512329600272
+      }
+    ],
+    "cumulative_step_times": {
+      "1": 16.54991287086159,
+      "2": 21.344060256145895,
+      "3": 25.43057712400332,
+      "4": 55.772442845162004,
+      "5": 61.18666265299544,
+      "6": 69.74124518316239,
+      "7": 75.65684040216729,
+      "8": 83.61560380086303,
+      "9": 89.59784417413175,
+      "10": 95.18147538788617,
+      "11": 101.82562988810241,
+      "12": 120.03445749124512,
+      "13": 125.55991386296228,
+      "14": 131.38434962695464,
+      "15": 140.15054186806083,
+      "16": 145.20648992527276,
+      "17": 154.1508210771717,
+      "18": 162.22254530526698,
+      "19": 167.23945989226922,
+      "20": 173.98746746312827,
+      "21": 189.85967838205397,
+      "22": 195.20771914022043,
+      "23": 200.89210425317287,
+      "24": 209.3259689300321,
+      "25": 215.50471746502444,
+      "26": 224.96391399297863,
+      "27": 230.00582654308528,
+      "28": 237.83877355698496,
+      "29": 247.84550883807242,
+      "30": 253.9211218431592
+    },
+    "task": "reverse_text",
+    "condition": "sgpo",
+    "eval_metric": 0.8177779842987614,
+    "eval_step": 30,
+    "eval_source": "analysis/results/reverse_text-sgpo_step30_vfeval.json"
   },
   "sciknoweval-baseline": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-baseline",
@@ -1140,7 +1309,7 @@
     "condition": "baseline",
     "eval_metric": 0.54125,
     "eval_step": 25,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/sciknoweval-baseline_step25_eval.json"
+    "eval_source": "analysis/results/sciknoweval-baseline_step25_eval.json"
   },
   "sciknoweval-duet": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-duet",
@@ -1284,7 +1453,7 @@
     "condition": "duet",
     "eval_metric": 0.54875,
     "eval_step": 25,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/sciknoweval-duet_step25_eval.json"
+    "eval_source": "analysis/results/sciknoweval-duet_step25_eval.json"
   },
   "sciknoweval-greso": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-greso",
@@ -1428,7 +1597,7 @@
     "condition": "greso",
     "eval_metric": 0.56875,
     "eval_step": 25,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/sciknoweval-greso_step25_eval.json"
+    "eval_source": "analysis/results/sciknoweval-greso_step25_eval.json"
   },
   "sciknoweval-difficulty_targeted": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-difficulty_targeted",
@@ -1567,7 +1736,7 @@
     "condition": "difficulty_targeted",
     "eval_metric": 0.45875,
     "eval_step": 25,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/sciknoweval-difficulty_targeted_step25_eval.json"
+    "eval_source": "analysis/results/sciknoweval-difficulty_targeted_step25_eval.json"
   },
   "sciknoweval-experience_replay": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-experience_replay",
@@ -1711,7 +1880,7 @@
     "condition": "experience_replay",
     "eval_metric": 0.48625,
     "eval_step": 25,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/sciknoweval-experience_replay_step25_eval.json"
+    "eval_source": "analysis/results/sciknoweval-experience_replay_step25_eval.json"
   },
   "sciknoweval-mu_grpo": {
     "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-mu_grpo",
@@ -1855,6 +2024,150 @@
     "condition": "mu_grpo",
     "eval_metric": 0.4675,
     "eval_step": 25,
-    "eval_source": "/home/ronny_romeo/fast-rl-bench/analysis/results/sciknoweval-mu_grpo_step25_eval.json"
+    "eval_source": "analysis/results/sciknoweval-mu_grpo_step25_eval.json"
+  },
+  "sciknoweval-sgpo": {
+    "run_dir": "/home/ronny_romeo/prime-rl/outputs/sciknoweval-sgpo",
+    "n_metric_rows": 150,
+    "n_orchestrator_rows": 25,
+    "max_step": 25,
+    "reward_key_used": "train/agg/effective/agent/reward/mean",
+    "final_reward": 0.734375,
+    "total_step_time_s": 266.8161762012169,
+    "launch_start_epoch": null,
+    "reward_curve": [
+      {
+        "step": 1,
+        "reward": 0.09375
+      },
+      {
+        "step": 2,
+        "reward": 0.125
+      },
+      {
+        "step": 3,
+        "reward": 0.078125
+      },
+      {
+        "step": 4,
+        "reward": 0.234375
+      },
+      {
+        "step": 5,
+        "reward": 0.2578125
+      },
+      {
+        "step": 6,
+        "reward": 0.4375
+      },
+      {
+        "step": 7,
+        "reward": 0.3984375
+      },
+      {
+        "step": 8,
+        "reward": 0.4609375
+      },
+      {
+        "step": 9,
+        "reward": 0.4921875
+      },
+      {
+        "step": 10,
+        "reward": 0.71875
+      },
+      {
+        "step": 11,
+        "reward": 0.578125
+      },
+      {
+        "step": 12,
+        "reward": 0.3828125
+      },
+      {
+        "step": 13,
+        "reward": 0.75
+      },
+      {
+        "step": 14,
+        "reward": 0.5859375
+      },
+      {
+        "step": 15,
+        "reward": 0.578125
+      },
+      {
+        "step": 16,
+        "reward": 0.5546875
+      },
+      {
+        "step": 17,
+        "reward": 0.5
+      },
+      {
+        "step": 18,
+        "reward": 0.71875
+      },
+      {
+        "step": 19,
+        "reward": 0.5625
+      },
+      {
+        "step": 20,
+        "reward": 0.5757575757575758
+      },
+      {
+        "step": 21,
+        "reward": 0.46875
+      },
+      {
+        "step": 22,
+        "reward": 0.671875
+      },
+      {
+        "step": 23,
+        "reward": 0.703125
+      },
+      {
+        "step": 24,
+        "reward": 0.609375
+      },
+      {
+        "step": 25,
+        "reward": 0.734375
+      }
+    ],
+    "cumulative_step_times": {
+      "1": 21.168491590302438,
+      "2": 27.855067738331854,
+      "3": 32.08224787097424,
+      "4": 67.51397663122043,
+      "5": 73.03576697129756,
+      "6": 92.81298888707533,
+      "7": 101.04887838894501,
+      "8": 110.61704340623692,
+      "9": 114.57482416927814,
+      "10": 134.512410747353,
+      "11": 142.23974428325891,
+      "12": 149.95736833428964,
+      "13": 154.7862063269131,
+      "14": 161.26419572206214,
+      "15": 179.59395119315013,
+      "16": 186.6515583670698,
+      "17": 190.92915031593293,
+      "18": 208.76334734121338,
+      "19": 215.67269097594544,
+      "20": 227.72798810107633,
+      "21": 230.24106869427487,
+      "22": 248.79576095705852,
+      "23": 253.158826532308,
+      "24": 260.70035626227036,
+      "25": 266.8161762012169
+    },
+    "task": "sciknoweval",
+    "condition": "sgpo",
+    "eval_metric": 0.54625,
+    "eval_step": 25,
+    "eval_source": "analysis/results/sciknoweval-sgpo_step25_eval.json"
   }
 }

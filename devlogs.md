@@ -1,7 +1,7 @@
 # devlogs
 
-Project: reproduce 5 "fast/efficient RL training" paper mechanisms (DUET, GRESO,
-Difficulty-Targeted Selection+Replay, Experience Replay, µ-GRPO) as additive
+Project: reproduce 6 "fast/efficient RL training" paper mechanisms (DUET, GRESO,
+Difficulty-Targeted Selection+Replay, Experience Replay, µ-GRPO, sGPO) as additive
 patches to [prime-rl](https://github.com/PrimeIntellect-ai/prime-rl), compare
 each against vanilla Prime-RL default GRPO, on two tasks (`reverse-text`,
 `sciknoweval`), under a **hard 5-minute training-time budget per run**
@@ -607,3 +607,91 @@ dumps and source reading rather than guessing from `--help` text; a
 sciknoweval eval 404 that looked like a vLLM readiness race but was
 actually a self-inflicted concurrent-git-pull race across two parallel ssh
 sessions.
+
+## 2026-08-21 — sGPO (sorted Group Policy Optimization) — 7th condition
+
+Paper: *sGPO: Trading Inference FLOPs for Training Efficiency in RLVR*, arXiv
+2606.08854 (Sudalairaj et al., Red Hat AI Innovation / IBM). Added as the
+seventh condition on branch `sGPO` (2 tasks x 7 conditions = 14 runs total).
+
+### Mechanism (as implemented)
+
+Single **offline profiling pass** (`scripts/sgpo_profile.py`): N=8 samples per
+train query under the initial policy -> empirical success rate p̂(q). One signal
+drives all three training-time decisions (`efficient_rl/sgpo.py`,
+`EFFRL_SGPO=on`):
+
+1. **Data selection** (paper §4.3.1, t=0.75): trivial (p̂>0.75) never
+   dispatched; unsolved (p̂=0) accepted with prob α=10%; learnable (0<p̂≤0.75)
+   trained in its bucket's phase.
+2. **Adaptive group size** (§4.3.2, Eq. 7/10): G ∈ {2,4,8} from 1/p̂
+   power-of-two buckets — targets E[n]=1 success per group.
+3. **Curriculum** (§4.3.3): phases G=2 → G=4 → G=8, step-scheduled via
+   `SGPO_PHASE_BOUNDS` (equal thirds of max_steps, computed in
+   run_condition.sh). Fidelity note: paper trains each cluster to
+   convergence; here phases are fixed step intervals within max_steps.
+
+Fidelity notes (documented, not silent): (i) fixed-step phases vs
+train-to-convergence; (ii) online Bernoulli(α) unsolved mix vs fixed
+subsample; (iii) reverse-text's continuous LCS reward is binarized at
+LCS≥0.5 during profiling (paper assumes binary verifiable rewards;
+sciknoweval uses exact-match verbatim); (iv) profiling inference cost sits
+outside the 5-min training budget (one-time per task).
+
+### Profiling results (initial policy)
+
+- reverse_text (SFT warm start, threshold 0.5): 1000 queries — learnable 841
+  (G2=227, G4=288, G8=326), unsolved 159, trivial 0.
+- sciknoweval (cold start): 17,870 train queries — learnable 7,580
+  (G2=3,564, G4=1,499, G8=2,517), unsolved 9,544 (53%), trivial 746 (4%).
+
+### Gotcha: port-8000 clash killed the first sciknoweval launch
+
+Launched sciknoweval-sgpo while the previous run (reverse_text-sgpo) was still
+finalizing: prime-rl's `rl` CLI keeps its vLLM inference server (default port
+8000) alive until "Training finished!" (the trainer drains its queue for ~2.5
+min *after* the orchestrator exits). The new run's server died at bind with
+"Inference failed with exit code -15" ~1s after "Startup complete". Fix: only
+launch the next run after the previous one's processes are fully gone (the
+relaunch, on free GPUs + free port, trained and evaluated cleanly). The
+original 12-run sweep ran strictly sequentially via run_all_conditions.sh —
+same rule.
+
+### Found: zero_advantage interaction on reverse_text (documented, not a bug)
+
+prime-rl's DEFAULT post_batch_filters include zero_advantage with
+enforce=**true** (packages/prime-rl-configs/.../orchestrator.py:335).
+reverse_text base.toml doesn't override it (sciknoweval's sets enforce=false).
+Baseline's G=16 continuous-reward groups never tie → 0% dropped; sGPO's small
+groups (esp. G=2 phase) tie often (same LCS ratio → zero within-group variance
+→ zero advantages) → 9-67% of generated rollouts dropped per step, inflating
+generation to refill the fixed 128-rollout batch. Mirrors the paper's own DAPO
+base (post-generation zero-variance group dropping) — kept for the
+comparison; the filter config is identical to baseline.
+
+sciknoweval's partial Trainable counts (43-69%) are NOT an sGPO artifact —
+baseline shows the same (25-75%) on that task (binary rewards → many groups
+zero-advantage; monitored, not enforced).
+
+### Final results (both runs EXIT_CODE_0, within 300s budget)
+
+- reverse_text-sgpo: 30 steps, 253.9s training (baseline 262.0s), final train
+  reward 0.791, eval **0.818** (baseline 0.807; best = GRESO 0.829).
+- sciknoweval-sgpo: 25 steps, 266.8s (baseline 263.2s), final train reward
+  0.734, eval **0.546** (baseline 0.541; best = GRESO 0.569).
+- sGPO = 2nd best held-out quality on BOTH tasks, at/above baseline quality
+  with ~neutral wall-clock. Why no time savings: fixed 128-rollout batches
+  mean skip decisions reallocate *which* queries generate, not how much;
+  smaller groups raise per-step group count + finalization overhead (and on
+  rt, zero-advantage refills). Benefit shows as sample allocation (52% of
+  sciknoweval train queries cut from the curriculum, eval still > baseline).
+
+### Profiling throughput notes
+
+First attempt used asyncio.gather → no incremental writes, crashed on
+as_completed identity-keying (Python wraps coroutines in `_wait_for_one`;
+fixed by tagging (idx, prompt) inside the task). Dual-GPU sharding
+(--idx-mod/--idx-shard) + vLLM `--enable-chunked-prefill --max-num-seqs 1024`
++ concurrency 128 took sciknoweval's profile (17,870 queries x 8) from
+~5h-equivalent to ~35 min. stdout block-buffers when redirected — progress
+prints stuck in the buffer; JSONL flushed every 500 rows.
