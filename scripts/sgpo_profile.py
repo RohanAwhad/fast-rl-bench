@@ -125,25 +125,21 @@ async def main_async(args: argparse.Namespace) -> None:
         if idx in resume_idx:
             continue
         system_prompt = task.data.system_prompt if task_name == "sciknoweval" else system_prompt_default
-        jobs.append(
-            (
-                idx,
-                task.data.prompt,
-                score_one(
-                    client, args.model, system_prompt, task.data.prompt,
-                    task_name, task, args.success_threshold, args.max_tokens,
-                    semaphore,
-                ),
-            )
+        coro = score_one(
+            client, args.model, system_prompt, task.data.prompt,
+            task_name, task, args.success_threshold, args.max_tokens,
+            semaphore,
         )
+        jobs.append((idx, task.data.prompt, coro))
+    job_meta = {coro: (idx, prompt) for idx, prompt, coro in jobs}
 
     out_f = open(args.out, "a" if args.resume else "w")
     counts: Counter[str] = Counter()
     bucket_counts: Counter[int] = Counter()
     n_done = 0
-    results = await asyncio.gather(*[coro for _, _, coro in jobs])
-    for (idx, prompt, _coro), successes in zip(jobs, results):
-        n_success = sum(successes)
+    for coro in asyncio.as_completed(list(job_meta)):
+        successes = await coro
+        idx, prompt = job_meta[coro]
         p_hat = n_success / N_SAMPLES
         decision, bucket = classify(p_hat)
         counts[decision] += 1
