@@ -1,20 +1,21 @@
 # Fast RL: Reproducing Time-Efficient RL Training Methods Under a 5-Minute Budget
 
 *A comparison of DUET, GRESO, Difficulty-Targeted Selection + Rollout Replay,
-Experience Replay, and µ-GRPO against vanilla Prime-RL GRPO, on `reverse-text`
-and `SciKnowEval`, each run capped at 5 minutes of training wall-clock.*
+Experience Replay, µ-GRPO, and sGPO against vanilla Prime-RL GRPO, on
+`reverse-text` and `SciKnowEval`, each run capped at 5 minutes of training
+wall-clock.*
 
 ## Abstract
 
-We reproduce the core training-loop mechanisms of five recent RL-efficiency
+We reproduce the core training-loop mechanisms of six recent RL-efficiency
 papers (DUET, GRESO, Difficulty-Targeted Selection + Rollout Replay,
-Experience Replay, and µ-GRPO) as additive, env-var/TOML-gated patches on
-top of vanilla Prime-RL GRPO, and compare all six conditions (the five
+Experience Replay, µ-GRPO, and sGPO) as additive, env-var/TOML-gated patches
+on top of vanilla Prime-RL GRPO, and compare all seven conditions (the six
 mechanisms plus baseline) on two tasks under a **hard 5-minute training
 wall-clock budget**: `reverse-text` (continuous LCS reward, warm-started
 from an SFT checkpoint) and `SciKnowEval` (binary MCQ-exact-match reward,
-cold-started). All 12 (task x condition) runs stayed under budget (200-270s
-observed). On reverse-text, all six conditions converge to a tight
+cold-started). All 14 (task x condition) runs stayed under budget (200-270s
+observed). On reverse-text, all seven conditions converge to a tight
 0.77-0.83 final held-out-eval-reward band, but the three replay-based
 mechanisms (Difficulty-Targeted, Experience Replay, µ-GRPO) reach it in
 ~23% less training wall-clock than baseline/DUET/GRESO -- a clean, "free"
@@ -25,12 +26,17 @@ baseline/DUET/GRESO by roughly 6-11 accuracy points (0.46-0.49 vs.
 cold-start bootstrapping trap: its difficulty-band filter drops nearly
 every group in early training (an untrained model fails almost everything,
 so almost every group looks "too hard"), starving its own replay buffer.
-The headline finding is a fidelity-relevant asymmetry the original papers'
-warmer-started settings would not surface as starkly: rollout-reuse and
-difficulty-based selection mechanisms trade fresh generation for wall-clock
-savings, which is free when the base policy is already competent, but costs
-real learning signal when the policy has not yet learned the task's basic
-output format.
+sGPO -- an offline-profiled data-selection + adaptive-group-size + easy-to-
+hard-curriculum mechanism -- lands 2nd-best held-out quality on both tasks
+(0.818 reverse-text eval reward, 0.546 SciKnowEval accuracy, both above
+baseline) at wall-clock parity with fresh generation, since our fixed
+128-rollout batches mean skipped queries reallocate rather than reduce
+generation volume. The headline finding is a fidelity-relevant asymmetry
+the original papers' warmer-started settings would not surface as starkly:
+rollout-reuse and difficulty-based selection mechanisms trade fresh
+generation for wall-clock savings, which is free when the base policy is
+already competent, but costs real learning signal when the policy has not
+yet learned the task's basic output format.
 
 ## 1. Introduction
 
@@ -87,14 +93,14 @@ avg 10.85s/step after a 22.7s warmup -> **`--max-steps 25`** (~272s
 training-loop time). Slower per-step than reverse-text, consistent with its
 longer `max_completion_tokens` (256 vs. 128).
 
-The same step budget is applied to all 6 conditions of a task: baseline does
+The same step budget is applied to all 7 conditions of a task: baseline does
 the most generation work per step of any condition (nothing is skipped or
 reused), so it is a conservative ceiling — variants that skip/reuse rollouts
 should train in equal or less wall-clock time for the same step count.
 
 ### 2.3 Conditions
 
-All five paper mechanisms are implemented as additive, env-var/TOML-gated
+All six paper mechanisms are implemented as additive, env-var/TOML-gated
 patches on top of vanilla Prime-RL (commit `d8f3d010`) — a baseline run
 touches none of this code. See `devlogs.md` for the full design rationale and
 documented fidelity gaps.
@@ -107,6 +113,7 @@ documented fidelity gaps.
 | Difficulty-Targeted Selection + Replay | Train preferentially on groups in `[0.15, 0.85]` mean-reward band; backfill batch from a replay buffer | new `difficulty_band` post-batch filter + replay buffer |
 | Experience Replay | Reuse recently-generated rollouts (`staleness` priority, uses-cap 3) instead of discarding after one step | replay buffer |
 | µ-GRPO | 1 fully-fresh batch every K=4 ships; the other 3 ship 100% replay of that batch (4 gradient steps per generation phase) | replay buffer + fresh/replay cycling |
+| sGPO | One offline profiling pass (N=8 samples/query under the initial policy) feeds: data selection (trivial queries dropped, unsolved mixed at α=10%), adaptive group size (G ∈ {2,4,8} by 1/p̂ bucket), and an easy→hard curriculum (G=2 → G=4 → G=8 phases, fixed step intervals) | `efficient_rl/sgpo.py` + `dispatcher.py::next_fresh_group` + `scripts/sgpo_profile.py` |
 
 ### 2.4 Evaluation
 
@@ -140,8 +147,9 @@ documented fidelity gaps.
 | Difficulty-Targeted + Replay | 30 | 0.745 | 206.7 | 0.784 |
 | Experience Replay | 30 | 0.746 | 209.7 | 0.773 |
 | µ-GRPO | 30 | 0.773 | 200.2 | 0.797 |
+| sGPO | 30 | 0.791 | 253.9 | **0.818** |
 
-All six conditions climb from the SFT warm start's ~0.1-0.2 reward to a
+All seven conditions climb from the SFT warm start's ~0.1-0.2 reward to a
 0.77-0.83 plateau by step 30, and all pass the 5-minute cutoff with
 50-100s to spare. Two groups emerge by training wall-clock: baseline/DUET/
 GRESO (fresh generation every step) average 266.2s; the three replay-based
@@ -157,6 +165,19 @@ policy is already competent (warm-started from SFT) and every rollout gets
 a graded, informative continuous reward, reusing/selecting rollouts instead
 of always generating fresh ones is close to a free lunch.
 
+sGPO sits in the fresh-generation group's quality band (eval 0.818, the
+second-best score behind GRESO) at 253.9s -- modestly *faster* than the
+fresh-generation average (266.2s) despite its offline profiling pass.
+Because every condition ships fixed 128-rollout batches, sGPO's skip
+decisions reallocate *which* queries generate rather than reducing
+generation volume; its adaptive group sizes (G=2/4/8 by difficulty bucket,
+scheduled easy→hard) are what move its per-step overhead -- in phase 0
+(G=2), zero-advantage groups (both rollouts tie on the same LCS ratio) are
+dropped by prime-rl's default enforcing filter, so the dispatcher refills
+from more groups, partially eating the generation savings. The net is
+quality at/above baseline with roughly neutral wall-clock -- a useful
+contrast to the replay-based conditions' pure-time tradeoff.
+
 ### 3.2 SciKnowEval
 
 ![sciknoweval: reward vs. step](figures/sciknoweval_reward_vs_step.png)
@@ -170,6 +191,7 @@ of always generating fresh ones is close to a free lunch.
 | Difficulty-Targeted + Replay | 25 | 0.625 | 220.5 | 0.459 |
 | Experience Replay | 25 | 0.344 | 226.7 | 0.486 |
 | µ-GRPO | 25 | 0.109 | 220.0 | 0.468 |
+| sGPO | 25 | 0.734 | 266.8 | 0.546 |
 
 The story inverts. Training curves are visibly noisier than reverse-text's
 (binary reward, cold start -- every early rollout is either exactly right
@@ -177,13 +199,26 @@ or exactly wrong, so per-step means swing between 0 and 1 depending on how
 many of a small group happened to guess correctly) and per-step *training*
 reward is a much less reliable single-step estimate of quality than the
 800-question held-out eval, so we treat eval accuracy as the primary
-metric. There, baseline/DUET/GRESO cluster at 0.54-0.57 while all three
+metric. There, baseline/DUET/GRESO/sGPO cluster at 0.54-0.57 while all three
 replay-based conditions cluster lower, at 0.46-0.49 -- a 6-11 accuracy-point
 gap in the *opposite* direction from reverse-text, despite the replay-based
-conditions again finishing faster (259.9s avg for fresh-generation
-conditions vs. 222.4s avg for replay-based, ~14% less wall-clock this time,
+conditions again finishing faster (261.6s avg for fresh-generation
+conditions vs. 222.4s avg for replay-based, ~15% less wall-clock this time,
 at the *same fixed step count* of 25 for every condition -- i.e. the
 replay-based conditions did not even use their full 5-minute allowance).
+
+sGPO's 0.546 slots into the fresh-generation cluster (2nd, behind GRESO)
+at wall-clock parity with baseline (266.8s vs 263.2s) -- notable because
+its profiling pass labels 53% of train queries unsolved (p̂=0, 90% skipped)
+and 4% trivial (p̂>0.75, fully skipped), yet per-step wall-clock does not
+drop: with fixed 128-rollout batches, skipped queries just reallocate
+generation to learnable ones, and the smaller groups (G=2/4/8) raise
+per-step group count and finalization overhead. The mechanism's benefit
+here is sample allocation rather than speed: 52% of training queries are
+cut from the curriculum yet final accuracy still edges baseline (0.546 vs
+0.541) -- on-par with GRESO's "skip predicted-uninformative prompts"
+strategy, which remains the stronger wall-clock saver (263.4s with the
+same 0.54-0.57 cluster).
 
 Difficulty-Targeted Selection's 0.459 (the single worst score, at or below
 baseline) has a concrete, mechanistic explanation, not just "replay is
@@ -214,18 +249,20 @@ already-competent warm start it mostly isn't.
 chosen to expose.** reverse-text (continuous reward, warm start) and
 SciKnowEval (binary reward, cold start) sit at opposite ends of "how much
 does any single rollout tell you, and how competent is the policy
-generating it" -- and the five papers' shared strategy (spend less
+generating it" -- and the six papers' shared strategy (spend less
 wall-clock generating fresh rollouts; reuse, select, or reallocate instead)
 pays off cleanly in the first regime and costs real quality in the second:
 
 - **reverse-text**: all three replay-based conditions (Difficulty-Targeted,
   Experience Replay, µ-GRPO) match baseline/DUET/GRESO's final eval reward
   within noise, using ~23% less training wall-clock. GRESO's slight edge
-  (0.829, the best of all six) and DUET's slight underperformance (0.801,
+  (0.829, the best of all seven) and DUET's slight underperformance (0.801,
   the worst of the fresh-generation group) are both well within the spread
   a different random seed would plausibly produce at this step count --
   neither should be read as a strong claim about GRESO or DUET
-  specifically.
+  specifically. sGPO (0.818) sits just behind GRESO in the same band, at
+  slightly *less* wall-clock than the fresh-generation average despite its
+  profiling pass.
 - **SciKnowEval**: the same three replay-based conditions underperform by
   6-11 accuracy points, and one of them (Difficulty-Targeted) has an
   identified, mechanistic failure mode (the cold-start bootstrapping trap,
@@ -233,7 +270,11 @@ pays off cleanly in the first regime and costs real quality in the second:
   zero-variance prompts before generation but still generates fresh every
   step it doesn't skip -- is the only non-baseline condition that both
   saves wall-clock *and* matches-or-beats baseline quality on both tasks,
-  making it the standout mechanism of the five in this reproduction.
+  making it the standout mechanism of the six in this reproduction. sGPO
+  (0.546, second) also matches-or-beats baseline on both tasks but without
+  a wall-clock saving: its skip decisions reallocate generation under our
+  fixed 128-rollout batches instead of reducing it, so its wins are
+  sample-allocation ones.
 
 **Why would the same mechanisms behave so differently?** Our reading:
 rollout replay and difficulty-based selection both implicitly assume the
@@ -300,6 +341,15 @@ are a real quality trade-off on a cold-started, binary-reward one.
   fresh/replay cycling for µ-GRPO) from priority-formula choice.
 - **SciKnowEval model size**: Qwen3-0.6B instead of the original Qwen3-8B
   (hardware constraint, see 2.1).
+- **sGPO**: (i) curriculum phases are fixed step intervals
+  (`SGPO_PHASE_BOUNDS` = thirds of `max_steps`) instead of the paper's
+  train-each-difficulty-cluster-to-convergence schedule; (ii) the unsolved
+  (p̂=0) query mix is an online Bernoulli(α=10%) instead of a fixed
+  per-phase subsample; (iii) reverse-text's continuous LCS reward is
+  binarized at LCS≥0.5 for the offline profile (the paper assumes binary
+  verifiable rewards; SciKnowEval uses exact-match verbatim); (iv) the
+  profiling pass's inference cost sits outside the 5-minute training
+  budget (it is one-time per task, not per run).
 
 ## Appendix: reproduction
 

@@ -17,11 +17,11 @@
 #
 # Usage: run_condition.sh <task> <condition> <max_steps> <outer_timeout_s> [run_suffix]
 #   task:      reverse_text | sciknoweval
-#   condition: baseline | duet | greso | difficulty_targeted | experience_replay | mu_grpo
+#   condition: baseline | duet | greso | difficulty_targeted | experience_replay | mu_grpo | sgpo
 set -euo pipefail
 
 TASK="${1:?task: reverse_text|sciknoweval}"
-CONDITION="${2:?condition: baseline|duet|greso|difficulty_targeted|experience_replay|mu_grpo}"
+CONDITION="${2:?condition: baseline|duet|greso|difficulty_targeted|experience_replay|mu_grpo|sgpo}"
 MAX_STEPS="${3:?max_steps (int)}"
 OUTER_TIMEOUT="${4:?outer timeout seconds (int)}"
 SUFFIX="${5:-}"
@@ -35,6 +35,11 @@ else
   TOML="$REPO_DIR/configs/$TASK/base.toml"
 fi
 [ -f "$TOML" ] || { echo "config not found: $TOML" >&2; exit 1; }
+
+if [ "$CONDITION" = "sgpo" ]; then
+  PROFILE="$REPO_DIR/sgpo_profiles/$TASK.jsonl"
+  [ -f "$PROFILE" ] || { echo "sGPO profile not found: $PROFILE (run scripts/sgpo_profile.sh first)" >&2; exit 1; }
+fi
 
 RUN_NAME="${TASK}-${CONDITION}${SUFFIX:+-$SUFFIX}"
 RUN_REL_DIR="outputs/${RUN_NAME}"          # prime-rl's own space -- never touched before launch
@@ -86,6 +91,18 @@ ENV_FILE="$TRACK_DIR/env.sh"
       echo "export EFFRL_MUGRPO_CYCLE_K=4"
       echo "export REPLAY_RUN_NAME=$RUN_NAME"
       echo "export REPLAY_METRICS=$TRACK_DIR/replay_metrics.jsonl"
+      ;;
+    sgpo)
+      # sGPO: offline-profiled data selection + adaptive group size +
+      # easy-to-hard curriculum. Requires the profiling pass output
+      # (scripts/sgpo_profile.sh) at $REPO_DIR/sgpo_profiles/<task>.jsonl.
+      # The curriculum phases split max_steps into three equal intervals
+      # (G=2 cluster -> G=4 -> G=8), the fixed-budget stand-in for the
+      # paper's train-each-cluster-to-convergence schedule.
+      echo "export EFFRL_SGPO=on"
+      echo "export SGPO_PROFILE_FILE=$REPO_DIR/sgpo_profiles/$TASK.jsonl"
+      echo "export SGPO_UNSOLVED_MIX=0.1"
+      echo "export SGPO_PHASE_BOUNDS=$((MAX_STEPS / 3)),$((2 * MAX_STEPS / 3))"
       ;;
     *)
       echo "unknown condition: $CONDITION" >&2; exit 1;;
