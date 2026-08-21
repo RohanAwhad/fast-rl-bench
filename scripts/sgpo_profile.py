@@ -131,15 +131,22 @@ async def main_async(args: argparse.Namespace) -> None:
             semaphore,
         )
         jobs.append((idx, task.data.prompt, coro))
-    job_meta = {coro: (idx, prompt) for idx, prompt, coro in jobs}
+
+    # Tag each job with its (idx, prompt) inside the task itself — identity
+    # mapping onto as_completed's yields is not portable across Python
+    # versions (it wraps awaitables in internal _wait_for_one coroutines).
+    async def run_tagged(coro, idx, prompt):
+        return idx, prompt, await coro
+
+    pending = [asyncio.create_task(run_tagged(coro, idx, prompt)) for idx, prompt, coro in jobs]
 
     out_f = open(args.out, "a" if args.resume else "w")
     counts: Counter[str] = Counter()
     bucket_counts: Counter[int] = Counter()
     n_done = 0
-    for coro in asyncio.as_completed(list(job_meta)):
-        successes = await coro
-        idx, prompt = job_meta[coro]
+    for task in asyncio.as_completed(pending):
+        idx, prompt, successes = await task
+        n_success = sum(successes)
         p_hat = n_success / N_SAMPLES
         decision, bucket = classify(p_hat)
         counts[decision] += 1
