@@ -12,7 +12,7 @@ OUTER_TIMEOUT="${3:?outer timeout seconds (int)}"
 REPO_DIR="${REPO_DIR:-$HOME/fast-rl-bench}"
 PRIME_RL_DIR="${PRIME_RL_DIR:-$HOME/prime-rl}"
 
-CONDITIONS=(baseline duet greso difficulty_targeted experience_replay mu_grpo)
+CONDITIONS=(baseline duet greso difficulty_targeted experience_replay mu_grpo sgpo)
 
 for cond in "${CONDITIONS[@]}"; do
   echo "############################################"

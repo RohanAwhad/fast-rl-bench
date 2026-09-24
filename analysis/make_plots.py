@@ -26,8 +26,9 @@ CONDITION_LABELS = {
     "difficulty_targeted": "Difficulty-Targeted +Replay",
     "experience_replay": "Experience Replay",
     "mu_grpo": "µ-GRPO",
+    "sgpo": "sGPO",
 }
-CONDITION_ORDER = ["baseline", "duet", "greso", "difficulty_targeted", "experience_replay", "mu_grpo"]
+CONDITION_ORDER = ["baseline", "duet", "greso", "difficulty_targeted", "experience_replay", "mu_grpo", "sgpo"]
 COLORS = {
     "baseline": "#444444",
     "duet": "#1f77b4",
@@ -35,6 +36,7 @@ COLORS = {
     "difficulty_targeted": "#2ca02c",
     "experience_replay": "#d62728",
     "mu_grpo": "#9467bd",
+    "sgpo": "#8c564b",
 }
 
 

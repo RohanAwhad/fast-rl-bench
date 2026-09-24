@@ -13,7 +13,7 @@ import csv
 import json
 from pathlib import Path
 
-CONDITIONS = ["baseline", "duet", "greso", "difficulty_targeted", "experience_replay", "mu_grpo"]
+CONDITIONS = ["baseline", "duet", "greso", "difficulty_targeted", "experience_replay", "mu_grpo", "sgpo"]
 TASKS = ["reverse_text", "sciknoweval"]
 
 

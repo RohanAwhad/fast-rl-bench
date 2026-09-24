@@ -30,7 +30,14 @@ Two additive, env-var-gated hooks live in ``next_fresh_group`` (train only):
     can't spin forever.
   - DUET (``EFFRL_DUET=on``): resolve this prompt's group_size adaptively
     from the same tracker instead of the env's fixed config value.
-Both are no-ops (identical to vanilla) when their env var is unset, and the
+  - sGPO (``EFFRL_SGPO=on``): same skip/group-size surface, driven by the
+    offline profiling file instead of an online tracker — trivial queries
+    (p̂ > 0.75) and out-of-phase-cluster queries are skipped before
+    generation, unsolved queries (p̂ = 0) are accepted with probability
+    ``SGPO_UNSOLVED_MIX``, and per-query group sizes come from the paper's
+    1/p̂ buckets; the curriculum phase (easy→hard) advances at
+    ``SGPO_PHASE_BOUNDS`` step boundaries (see efficient_rl/sgpo.py).
+All are no-ops (identical to vanilla) when their env var is unset, and the
 observation side (updating the tracker once a group finishes) only runs when
 at least one of them is enabled, so a baseline run pays zero cost.
 """
@@ -53,6 +60,14 @@ from prime_rl.efficient_rl.allocation import (
     greso_enabled,
     greso_should_skip,
 )
+from prime_rl.efficient_rl.sgpo import (
+    sgpo_enabled,
+    sgpo_entry,
+    sgpo_group_size,
+    sgpo_phase_bounds,
+    sgpo_phase_bucket,
+    sgpo_should_skip,
+)
 from prime_rl.efficient_rl.utility_tracker import tracker_singleton
 from prime_rl.orchestrator.envs import EvalEnvs, TrainEnvs
 from prime_rl.orchestrator.eval_source import EvalSource
@@ -72,6 +87,13 @@ from prime_rl.utils.logger import get_logger
 # attempt, so a dataset where every bucket currently looks low-utility can't
 # spin the event loop forever.
 _GRESO_MAX_SKIP_RETRIES = 32
+
+# Bound on sGPO's same pattern: phase-gated dispatch can skip a large share
+# of pops (queries outside the current curriculum cluster + trivial ones),
+# so the bound is looser than GRESO's. Tripping it logs a warning and
+# accepts the popped example anyway (degraded curriculum, training keeps
+# moving) instead of stalling dispatch.
+_SGPO_MAX_SKIP_RETRIES = 256
 
 
 class DispatcherMode(Enum):
@@ -93,6 +115,8 @@ class DispatcherMetrics:
     errored_by_kind_env: dict[tuple[Literal["train", "eval"], str], int] = field(
         default_factory=lambda: defaultdict(int)
     )
+    sgpo_skipped: dict[str, int] = field(default_factory=lambda: defaultdict(int))
+    sgpo_accepted: dict[str, int] = field(default_factory=lambda: defaultdict(int))
 
     def record_cancellation(self, *, kind: Literal["train", "eval"], env_name: str, n: int = 1) -> None:
         self.cancelled_by_kind_env[(kind, env_name)] += n
@@ -118,8 +142,16 @@ class DispatcherMetrics:
             out[f"dispatcher/errored/{env}"] = float(
                 self.errored_by_kind_env.get(("train", env), 0) + self.errored_by_kind_env.get(("eval", env), 0)
             )
+        for reason in ("trivial", "phase", "unsolved"):
+            out[f"sgpo/skipped/{reason}"] = float(self.sgpo_skipped.get(reason, 0))
+        out["sgpo/skipped/total"] = float(sum(self.sgpo_skipped.values()))
+        for bucket in ("2", "4", "8", "unsolved"):
+            out[f"sgpo/accepted/{bucket}"] = float(self.sgpo_accepted.get(bucket, 0))
+        out["sgpo/accepted/total"] = float(sum(self.sgpo_accepted.values()))
         self.cancelled_by_kind_env.clear()
         self.errored_by_kind_env.clear()
+        self.sgpo_skipped.clear()
+        self.sgpo_accepted.clear()
         return out
 
     @staticmethod
@@ -135,6 +167,12 @@ class DispatcherMetrics:
         for env in train_envs | eval_envs:
             keys.append(f"dispatcher/cancelled/{env}")
             keys.append(f"dispatcher/errored/{env}")
+        for reason in ("trivial", "phase", "unsolved"):
+            keys.append(f"sgpo/skipped/{reason}")
+        keys.append("sgpo/skipped/total")
+        for bucket in ("2", "4", "8", "unsolved"):
+            keys.append(f"sgpo/accepted/{bucket}")
+        keys.append("sgpo/accepted/total")
         return keys
 
 
@@ -198,6 +236,10 @@ class RolloutDispatcher:
 
         # --- efficient_rl (DUET / GRESO) ---
         self._effrl_tracking = duet_enabled() or greso_enabled()
+
+        # --- efficient_rl (sGPO) ---
+        self._effrl_sgpo = sgpo_enabled()
+        self._sgpo_phase = 0
 
     def _train_pool_for(self, env_name: str) -> tuple[InferencePool, str, bool]:
         """``(pool, model_name, is_live)`` for *train* rollouts of this env —
@@ -305,6 +347,7 @@ class RolloutDispatcher:
         the resulting aborts are processed while the engine is still stepping —
         otherwise the orphaned KV transfers crash the decode engine on resume
         (see ``WeightWatcher.apply_policy_update``)."""
+        self._advance_sgpo_phase(step)
         stale_groups: set[uuid.UUID] = set()
         cancelled = 0
         for meta in self.inflight.values():
@@ -330,6 +373,21 @@ class RolloutDispatcher:
 
     async def on_new_version(self, step: int) -> None:
         """No-op: the dispatcher drains in ``on_version_pending`` (pre-pause)."""
+
+    def _advance_sgpo_phase(self, step: int) -> None:
+        """Step-scheduled easy-to-hard curriculum (sGPO §4.3.3): phases
+        advance when the training step crosses ``SGPO_PHASE_BOUNDS``. The
+        dispatcher gates *dispatch* on the phase; in-flight groups finish at
+        their start-time group size regardless."""
+        if not self._effrl_sgpo:
+            return
+        phase = sum(1 for b in sgpo_phase_bounds() if step > b)
+        if phase != self._sgpo_phase:
+            get_logger().info(
+                f"sGPO curriculum: phase {self._sgpo_phase} -> {phase} at step {step} "
+                f"(bucket G={sgpo_phase_bucket(phase)})"
+            )
+            self._sgpo_phase = phase
 
     async def fill_inflight(self) -> None:
         """Schedule new rollouts up to ``max_inflight``, honoring
@@ -416,6 +474,23 @@ class RolloutDispatcher:
                 retries += 1
                 if example is None:
                     break
+        if kind == "train" and example is not None and sgpo_enabled():
+            retries = 0
+            while retries < _SGPO_MAX_SKIP_RETRIES:
+                idx = _example_idx(example)
+                skip, reason = sgpo_should_skip(idx, self._sgpo_phase)
+                if not skip:
+                    break
+                self.metrics.sgpo_skipped[reason] += 1
+                example = source.next_example()
+                retries += 1
+                if example is None:
+                    break
+            if retries >= _SGPO_MAX_SKIP_RETRIES and example is not None:
+                get_logger().warning(
+                    "sGPO: skip retry bound reached; accepting an example outside the current phase "
+                    f"cluster (phase={self._sgpo_phase}, G={sgpo_phase_bucket(self._sgpo_phase)})"
+                )
         if example is None:
             return None
 
@@ -423,8 +498,15 @@ class RolloutDispatcher:
         base_group_size = envs.get(env_name).config.group_size
         if kind == "train" and duet_enabled():
             group_size = duet_group_size(_example_prompt(example), base_group_size)
+        elif kind == "train" and sgpo_enabled():
+            group_size = sgpo_group_size(_example_idx(example), self._sgpo_phase, base_group_size)
         else:
             group_size = base_group_size
+        if kind == "train" and self._effrl_sgpo:
+            entry = sgpo_entry(_example_idx(example))
+            if entry is not None:
+                key = "unsolved" if entry["decision"] == "unsolved" else f"G{entry['bucket']}"
+                self.metrics.sgpo_accepted[key] += 1
         eval_step: int | None = example.get("eval_step") if kind == "eval" else None
 
         return GroupState(
@@ -728,3 +810,15 @@ def _example_prompt(example: dict) -> str:
         return example["task"].data.prompt or ""
     except Exception:
         return ""
+
+
+def _example_idx(example: dict) -> int:
+    """Best-effort dataset index for an example dict, used only by sGPO's
+    per-query profile lookup — never raises (falls back to -1, which just
+    means "no profile entry", not a crash) so a task-data shape we didn't
+    anticipate degrades to baseline-equivalent instead of breaking dispatch.
+    """
+    try:
+        return int(example["task"].data.idx)
+    except Exception:
+        return -1
